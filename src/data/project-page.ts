@@ -47,7 +47,7 @@ export const bookCover: ImageAsset = {
 };
 export const figures: Record<string, ImageAsset> = {
   teaser: { src: "/images/monograph/progression.png", width: 1212, height: 372, alt: "Figure 1.1: progression from digital tools and simulated agents to real-world agents, multi-agent collaboration, and infrastructure-level physical intelligence" },
-  framework: { src: "/images/monograph/closed-loop.svg", width: 1446, height: 1011, alt: "Figure 1.3: perception, world modeling, decision-making, and control connected through physical feedback, data, and hardware" },
+  framework: { src: "/images/monograph/closed-loop-v2.svg", width: 1446, height: 1059, alt: "Figure 1.3: perception, world modeling, decision-making, and control connected through physical feedback, data, and hardware" },
 };
 
 export const aboutParagraphs = [
