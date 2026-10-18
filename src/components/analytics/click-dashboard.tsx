@@ -31,7 +31,7 @@ function ClickChart({ series }: { series: ClickDay[] }) {
   const hasClicks = series.some((day) => day.clicks > 0);
   return (
     <div className="click-chart" onPointerLeave={() => setActive(null)}>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Daily arXiv clicks over the last ${series.length} days`}>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`Daily reading-link clicks over the last ${series.length} days`}>
         <desc>{clickLabel(series.reduce((sum, day) => sum + day.clicks, 0))} in this date range. A daily data table is available below.</desc>
         {[0, 1, 2, 3, 4].map((tick) => {
           const y = top + plotHeight - tick * plotHeight / 4;
@@ -47,14 +47,14 @@ function ClickChart({ series }: { series: ClickDay[] }) {
         })}
         {[0, Math.floor((series.length - 1) / 2), series.length - 1].map((index) => <text key={index} x={left + (index + 0.5) * slot} y={height - 10} textAnchor={index === 0 ? "start" : index === series.length - 1 ? "end" : "middle"} className="click-chart-label">{displayDate(series[index].date)}</text>)}
       </svg>
-      {!hasClicks ? <div className="click-chart-empty"><MousePointer2 aria-hidden="true" className="size-6 text-primary" /><p>No clicks in this date range</p><span>Counts appear when the official arXiv button is used after release.</span></div> : null}
+      {!hasClicks ? <div className="click-chart-empty"><MousePointer2 aria-hidden="true" className="size-6 text-primary" /><p>No clicks in this date range</p><span>Counts appear when the public reading link becomes available.</span></div> : null}
       {selected && hasClicks ? <div className="click-chart-tooltip" style={{ left: `${Math.max(9, Math.min(91, (left + ((active ?? 0) + 0.5) * slot) / width * 100))}%` }}><span>{selected.date}</span><strong>{clickLabel(selected.clicks)}</strong></div> : null}
     </div>
   );
 }
 
 export function ClickDashboard() {
-  const { data, loading, error, published, global, refresh } = useClickData();
+  const { data, loading, error, available, global, refresh } = useClickData();
   const [range, setRange] = useState(30);
 
   const snapshot = data ?? emptyClickData();
@@ -62,14 +62,14 @@ export function ClickDashboard() {
   const periodTotal = series.reduce((sum, day) => sum + day.clicks, 0);
   const metrics = [
     { label: "Total Clicks", value: totalClicks(snapshot), detail: "All recorded dates" },
-    { label: "Today", value: snapshot.daily[dateKey()] ?? 0, detail: published && data ? `Date: ${dateKey()}` : "Asia/Shanghai (UTC+8)" },
+    { label: "Today", value: snapshot.daily[dateKey()] ?? 0, detail: available && data ? `Date: ${dateKey()}` : "Asia/Shanghai (UTC+8)" },
     { label: "Last 7 Days", value: clickSeries(snapshot, 7).reduce((sum, day) => sum + day.clicks, 0), detail: "Including today" },
   ];
   const exportCsv = () => {
     if (!data) return;
     const url = URL.createObjectURL(new Blob([clickCsv(data)], { type: "text/csv;charset=utf-8" }));
     const link = document.createElement("a");
-    link.href = url; link.download = `physical-ai-arxiv-clicks-${dateKey()}.csv`;
+    link.href = url; link.download = `physical-ai-reading-clicks-${dateKey()}.csv`;
     link.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
@@ -78,13 +78,13 @@ export function ClickDashboard() {
     <div className="mx-auto max-w-[1120px]" id="top">
       <a className="analytics-back" href={assetPath("/#preprint-manuscript")}><ArrowLeft aria-hidden="true" className="size-4" />Back to the Book</a>
       <header className="analytics-heading">
-        <div><p className="section-eyebrow">Website Analytics</p><h1>arXiv Clicks</h1><p className="analytics-lead">Clicks on the arXiv button in the Preprint Manuscript resource card.</p></div>
-        <span className="analytics-scope">{!published ? "Awaiting publication" : global ? "All visitor data" : "Local browser data"}</span>
+        <div><p className="section-eyebrow">Website Analytics</p><h1>Reading Link Clicks</h1><p className="analytics-lead">Clicks on the reading button in the Open-Access Manuscript resource card.</p></div>
+        <span className="analytics-scope">{!available ? "Awaiting online edition" : global ? "All visitor data" : "Local browser data"}</span>
       </header>
-      <p className="analytics-scope-note">{!published ? "The preprint has not been published yet. Counts stay at 0 and no clicks are recorded until the official arXiv link is enabled." : global ? "Counts are supplied by the configured summary service." : "These counts belong to this browser only. Visitors and devices are not combined. Global analytics is ready to connect when a service is configured."}</p>
+      <p className="analytics-scope-note">{!available ? "The open-access edition is not available online yet. Counts stay at 0 and no clicks are recorded until the reading link is enabled." : global ? "Counts are supplied by the configured summary service." : "These counts belong to this browser only. Visitors and devices are not combined. Global analytics is ready to connect when a service is configured."}</p>
       {error ? <p role="alert" className="analytics-error">{error}</p> : null}
       <div className="analytics-metrics" aria-live="polite">
-        {metrics.map((metric) => <article className="analytics-metric" key={metric.label}><h2>{metric.label}</h2><p>{data || !published ? countFormat.format(metric.value) : "—"}</p><span>{metric.detail}</span></article>)}
+        {metrics.map((metric) => <article className="analytics-metric" key={metric.label}><h2>{metric.label}</h2><p>{data || !available ? countFormat.format(metric.value) : "—"}</p><span>{metric.detail}</span></article>)}
       </div>
       <section className="analytics-panel" aria-labelledby="click-trend-title">
         <div className="analytics-panel-heading">
@@ -96,9 +96,9 @@ export function ClickDashboard() {
       </section>
       <section className="analytics-panel analytics-data-panel" aria-labelledby="daily-data-title">
         <div className="analytics-panel-heading"><div><h2 id="daily-data-title">Daily Data</h2><p>Daily counts for the selected period. CSV exports include all recorded dates.</p></div><div className="analytics-data-actions"><Button size="sm" variant="outline" onClick={refresh} disabled={loading}><RefreshCw aria-hidden="true" />Refresh</Button><Button size="sm" variant="outline" onClick={exportCsv} disabled={!data}><Download aria-hidden="true" />Export CSV</Button></div></div>
-        <details className="analytics-data-details"><summary>View daily counts</summary><div className="analytics-table-scroll"><table><thead><tr><th scope="col">Date</th><th scope="col">arXiv Clicks</th></tr></thead><tbody>{data ? [...series].reverse().map((day) => <tr key={day.date}><th scope="row">{day.date}</th><td>{countFormat.format(day.clicks)}</td></tr>) : <tr><td colSpan={2}>Counts unavailable</td></tr>}</tbody></table></div></details>
+        <details className="analytics-data-details"><summary>View daily counts</summary><div className="analytics-table-scroll"><table><thead><tr><th scope="col">Date</th><th scope="col">Reading Link Clicks</th></tr></thead><tbody>{data ? [...series].reverse().map((day) => <tr key={day.date}><th scope="row">{day.date}</th><td>{countFormat.format(day.clicks)}</td></tr>) : <tr><td colSpan={2}>Counts unavailable</td></tr>}</tbody></table></div></details>
       </section>
-      <p className="analytics-note">Only clicks on the official, released arXiv link are counted. Placeholder clicks and earlier test records are excluded. Counts do not represent unique readers or successful downloads.{published && !global ? " Clearing browser data removes these local records." : ""}</p>
+      <p className="analytics-note">Only clicks on the enabled public reading link are counted. Earlier placeholder test records are excluded. Counts do not represent unique readers or successful downloads.{available && !global ? " Clearing browser data removes these local records." : ""}</p>
     </div>
   );
 }

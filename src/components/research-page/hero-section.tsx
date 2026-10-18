@@ -46,7 +46,7 @@ export function HeroSection() {
               </button>
             ))}
           </div>
-          <p className="book-edition-note">Preprint coming soon · Publication details to be announced</p>
+          <p className="book-edition-note">{projectInfo.editionNote}</p>
           <dl aria-label="About this edition" className="book-facts">
             <div><dt>Parts</dt><dd>3</dd></div>
             <div><dt>Chapters</dt><dd>12</dd></div>

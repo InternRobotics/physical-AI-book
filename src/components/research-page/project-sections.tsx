@@ -5,18 +5,18 @@ import { CopyCitation } from "@/components/research-page/copy-citation";
 import { FigureCard } from "@/components/site/figure-card";
 import { SectionShell } from "@/components/site/section-shell";
 import { Button, buttonClasses } from "@/components/ui/button";
-import { ArxivLink } from "@/components/arxiv-link";
-import { ArxivClickCount } from "@/components/analytics/arxiv-click-count";
+import { ReadingLink } from "@/components/reading-link";
+import { ReadingClickCount } from "@/components/analytics/reading-click-count";
 import contents from "@/data/contents.json";
-import { aboutParagraphs, bibtex, citationText, contactInfo, coreElements, figures, partDescriptions, projectInfo, resources } from "@/data/project-page";
+import { aboutParagraphs, bibtex, citationText, contactInfo, coreElements, figures, partDescriptions, projectInfo, resources, rightsNotice } from "@/data/project-page";
 import { assetPath } from "@/lib/asset-path";
 
 export function AboutSection() {
   return (
-    <SectionShell eyebrow="About the Book" id="about" title="A Unified View of Physical AI" lead={<>What is Physical AI? What does its technical landscape look like?<br className="desktop-lead-break" />{" "}What challenges stand between today&apos;s systems and general physical intelligence?</>}>
+    <SectionShell eyebrow="About the Book" id="about" title="A Unified View of Physical AI" leadClassName="about-questions" headingClassName="max-w-none" lead={<><span>What is Physical AI?</span><span>What does its technical landscape look like?</span><span>What challenges stand between today&apos;s systems and general physical intelligence?</span></>}>
       <div className="grid items-start gap-8 lg:grid-cols-[1fr_1fr]">
         <div className="space-y-5 text-base leading-8 text-muted-foreground">
-          {aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          {aboutParagraphs.map((paragraph, index) => <p key={paragraph}>{index === 0 ? <><span className="opening-initial">{paragraph[0]}</span>{paragraph.slice(1)}</> : paragraph}</p>)}
         </div>
         <FigureCard caption="The system-level framework of Physical AI: models and control connected to the physical world through feedback. From Figure 1.3 of the monograph.">
           <ProjectImage {...figures.framework} />
@@ -40,11 +40,11 @@ function ContentsPartCard({ part }: {
   return (
     <article className="contents-part" data-part={part.id} aria-label={`Part ${part.number}: ${part.title}`}>
         <div className="contents-part-header">
-          <div className="contents-part-kicker"><span className="part-number" aria-label={`Part ${part.number}`}>{part.number}</span><span>{part.chapters.length} chapters</span></div>
+          <div className="contents-part-kicker"><span className="part-number">Part {part.number}</span><span>{part.chapters.length} chapters</span></div>
           <h3>{part.title}</h3>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">{partDescriptions[part.id]}</p>
         </div>
-      <div className="contents-chapters">
+      <div className="contents-chapters" role="region" aria-label={`Part ${part.number} chapters`} tabIndex={0}>
         {part.chapters.map((chapter) => (
           <details className="chapter-details" key={chapter.number}>
             <summary>
@@ -94,7 +94,7 @@ const resourceIcons = { pdf: BookOpen, code: Code2, slides: Presentation, errata
 
 export function ResourcesSection() {
   return (
-    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Companion Resources" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="The preprint is coming soon. Companion materials will be shared here as they become available.">
+    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Companion Resources" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="In press, with open access. Companion materials will be shared here as they become available.">
       <div className="grid gap-5 md:grid-cols-2">
         {resources.map((resource) => {
           const Icon = resourceIcons[resource.icon];
@@ -104,9 +104,9 @@ export function ResourcesSection() {
               <h3>{resource.title}</h3><p>{resource.description}</p>
               <div className="mt-6">
                 {resource.id === "preprint" ? (
-                  <div className="arxiv-action resource-preprint-action">
-                    <ArxivLink className={buttonClasses({ size: "sm" })} href={projectInfo.arxivUrl}><ArrowUpRight aria-hidden="true" />Read on arXiv</ArxivLink>
-                    <ArxivClickCount />
+                  <div className="reading-action resource-preprint-action">
+                    <ReadingLink className={buttonClasses({ size: "sm" })} href={projectInfo.readingUrl}><BookOpen aria-hidden="true" />Read the monograph</ReadingLink>
+                    <ReadingClickCount />
                   </div>
                 ) : resource.href ? <a className={buttonClasses({ variant: "outline", size: "sm" })} href={assetPath(resource.href)} target="_blank" rel="noopener noreferrer"><ArrowUpRight aria-hidden="true" />{resource.label}</a> : <span className="resource-status">{resource.label}</span>}
               </div>
@@ -115,7 +115,7 @@ export function ResourcesSection() {
         })}
       </div>
       <div className="publication-details mt-8">
-        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">Forthcoming</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The manuscript is being prepared for public release. Publication information will appear here.</p></div>
+        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">In Press, with Open Access</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The monograph is in press and will be published with open access. Publication details and the reading link will appear here when available.</p></div>
         <dl className="publication-facts">
           <div><dt>Publisher</dt><dd>{projectInfo.publisher ?? "To be announced"}</dd></div>
           <div><dt>Publication date</dt><dd>{projectInfo.publicationDate ?? "To be announced"}</dd></div>
@@ -128,11 +128,12 @@ export function ResourcesSection() {
 
 export function BibtexSection() {
   return (
-    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="This is a provisional citation for the forthcoming monograph.">
+    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="The monograph is in press, with open access.">
       <p className="citation-prose mb-7 text-base leading-8 text-muted-foreground">{citationText}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4"><h3 className="flex items-center gap-2 font-semibold"><FileText aria-hidden="true" className="size-4 text-primary" />BibTeX</h3><CopyCitation text={bibtex} /></div>
       <pre className="overflow-x-auto rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
       <p className="results-note">The citation will be updated when the manuscript and final publication details are available.</p>
+      <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p><a className="text-primary text-sm" href="#contact">Contact the team</a></aside>
     </SectionShell>
   );
 }

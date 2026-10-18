@@ -1,7 +1,7 @@
-import { isArxivPublished } from "@/data/publication";
+import { isReadingAvailable } from "@/data/publication";
 
 // Isolate official-release clicks from the earlier placeholder test records.
-export const CLICK_STORAGE_KEY = "physicalai:arxiv-clicks:published:v1";
+export const CLICK_STORAGE_KEY = "physicalai:reading-clicks:published:v1";
 export const CLICK_EVENT = "physicalai:analytics";
 export const ANALYTICS_TIME_ZONE = "Asia/Shanghai";
 
@@ -12,8 +12,8 @@ export const analyticsConfig = {
 
 export type ClickData = { version: 1; daily: Record<string, number>; updatedAt: string | null };
 export type ClickDay = { date: string; clicks: number };
-export type ArxivClickEvent = {
-  event: "arxiv_click"; event_id: string; occurred_at: string;
+export type ReadingClickEvent = {
+  event: "reading_click"; event_id: string; occurred_at: string;
   source: "preprint_resource"; destination: string;
 };
 type ClickStorage = Pick<Storage, "getItem" | "setItem">;
@@ -75,7 +75,7 @@ export function totalClicks(data: ClickData) {
 }
 
 export function clickCsv(data: ClickData) {
-  return "date,arxiv_clicks\n" + Object.entries(data.daily).sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => `${date},${count}`).join("\n") + "\n";
+  return "date,reading_clicks\n" + Object.entries(data.daily).sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => `${date},${count}`).join("\n") + "\n";
 }
 
 export function httpsEndpoint(endpoint: string | null): string | null {
@@ -87,8 +87,8 @@ export function httpsEndpoint(endpoint: string | null): string | null {
 }
 
 // Only active after a collection endpoint is explicitly configured.
-export function sendClickEvent(event: ArxivClickEvent) {
-  if (!isArxivPublished(event.destination)) return;
+export function sendClickEvent(event: ReadingClickEvent) {
+  if (!isReadingAvailable(event.destination)) return;
   const endpoint = httpsEndpoint(analyticsConfig.eventEndpoint);
   if (!endpoint) return;
   const body = JSON.stringify(event);
@@ -97,11 +97,11 @@ export function sendClickEvent(event: ArxivClickEvent) {
   } catch { /* Fall back to a navigation-safe request. */ }
   try {
     void fetch(endpoint, { method: "POST", body, keepalive: true, credentials: "omit", headers: { "Content-Type": "text/plain;charset=UTF-8" } }).catch(() => {});
-  } catch { /* Tracking must never interrupt the arXiv link. */ }
+  } catch { /* Tracking must never interrupt the reading link. */ }
 }
 
-export async function trackArxivClick(destination: string) {
-  if (typeof window === "undefined" || !isArxivPublished(destination)) return;
+export async function trackReadingClick(destination: string) {
+  if (typeof window === "undefined" || !isReadingAvailable(destination)) return;
   const at = new Date();
   let saved = false;
   const save = () => { incrementLocalClicks(window.localStorage, at); saved = true; };
@@ -112,8 +112,8 @@ export async function trackArxivClick(destination: string) {
   } catch { /* Storage can be unavailable; navigation remains functional. */ }
   let eventId = `${at.getTime()}-${Math.random().toString(16).slice(2)}`;
   try { eventId = crypto.randomUUID(); } catch { /* A non-identifying fallback works in older browsers. */ }
-  const event: ArxivClickEvent = {
-    event: "arxiv_click", event_id: eventId, occurred_at: at.toISOString(),
+  const event: ReadingClickEvent = {
+    event: "reading_click", event_id: eventId, occurred_at: at.toISOString(),
     source: "preprint_resource", destination,
   };
   try { window.dispatchEvent(new CustomEvent(CLICK_EVENT, { detail: { ...event, local_recorded: saved } })); } catch { /* Optional integration hook. */ }

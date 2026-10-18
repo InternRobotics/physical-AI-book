@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { isArxivPublished } from "@/data/publication";
+import { isReadingAvailable } from "@/data/publication";
 import { CLICK_EVENT, CLICK_STORAGE_KEY, analyticsConfig, emptyClickData, httpsEndpoint, normalizeClickData, readLocalClicks, type ClickData } from "@/lib/analytics";
 
 export function useClickData() {
-  const published = isArxivPublished();
-  const global = published && Boolean(analyticsConfig.summaryEndpoint);
+  const available = isReadingAvailable();
+  const global = available && Boolean(analyticsConfig.summaryEndpoint);
   const [data, setData] = useState<ClickData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export function useClickData() {
       if (alive) setLoading(true);
       try {
         let snapshot: ClickData;
-        if (!published) snapshot = emptyClickData();
+        if (!available) snapshot = emptyClickData();
         else if (global) {
           const endpoint = httpsEndpoint(analyticsConfig.summaryEndpoint);
           if (!endpoint) throw new Error("The summary endpoint needs a valid HTTPS URL.");
@@ -46,7 +46,7 @@ export function useClickData() {
     window.addEventListener("focus", refresh);
     document.addEventListener("visibilitychange", visible);
     return () => { alive = false; controller.abort(); window.removeEventListener(CLICK_EVENT, refresh); window.removeEventListener("storage", storageChanged); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", visible); };
-  }, [global, published, refreshKey]);
+  }, [global, available, refreshKey]);
 
-  return { data, loading, error, published, global, refresh: () => setRefreshKey((key) => key + 1) };
+  return { data, loading, error, available, global, refresh: () => setRefreshKey((key) => key + 1) };
 }

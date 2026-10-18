@@ -30,29 +30,29 @@ function loadAnalytics() {
 
 (async () => {
   const { api, publication, context, values, storage, events, requests, beacons } = loadAnalytics();
-  const { CLICK_STORAGE_KEY, dateKey, clickSeries, incrementLocalClicks, readLocalClicks, normalizeClickData, totalClicks, clickCsv, trackArxivClick, analyticsConfig, sendClickEvent, httpsEndpoint } = api;
-  const { arxivPublication, isArxivPublished } = publication;
-  const releasedUrl = 'https://arxiv.org/abs/2601.12345';
-  const event = { event: 'arxiv_click', event_id: 'test', occurred_at: '2026-10-14T00:00:00Z', source: 'preprint_resource', destination: releasedUrl };
+  const { CLICK_STORAGE_KEY, dateKey, clickSeries, incrementLocalClicks, readLocalClicks, normalizeClickData, totalClicks, clickCsv, trackReadingClick, analyticsConfig, sendClickEvent, httpsEndpoint } = api;
+  const { bookPublication, isReadingAvailable } = publication;
+  const releasedUrl = 'https://example.test/physical-ai-monograph.pdf';
+  const event = { event: 'reading_click', event_id: 'test', occurred_at: '2026-10-14T00:00:00Z', source: 'preprint_resource', destination: releasedUrl };
 
   values.set('physicalai:arxiv-clicks:v1', JSON.stringify({ version: 1, daily: { '2026-10-14': 4 }, updatedAt: null }));
   analyticsConfig.eventEndpoint = 'https://analytics.example.test/events';
-  await trackArxivClick(arxivPublication.url);
+  await trackReadingClick(bookPublication.url);
   sendClickEvent(event);
   assert.equal(totalClicks(readLocalClicks(storage)), 0, 'Earlier placeholder records must not enter the release count');
   assert.equal(values.has(CLICK_STORAGE_KEY), false, 'Unreleased clicks must not write records');
   assert.equal(events.length + requests.length + beacons.length, 0, 'Unreleased clicks must not dispatch or transmit events');
-  arxivPublication.published = true;
-  assert.equal(isArxivPublished(), false, 'The placeholder cannot enable tracking even with the release switch on');
-  await trackArxivClick(arxivPublication.url);
+  bookPublication.available = true;
+  assert.equal(isReadingAvailable(), false, 'A missing URL cannot enable tracking even with the release switch on');
+  await trackReadingClick(bookPublication.url);
   assert.equal(values.has(CLICK_STORAGE_KEY), false);
-  arxivPublication.url = releasedUrl;
-  arxivPublication.published = false;
-  await trackArxivClick(releasedUrl);
+  bookPublication.url = releasedUrl;
+  bookPublication.available = false;
+  await trackReadingClick(releasedUrl);
   assert.equal(values.has(CLICK_STORAGE_KEY), false, 'A real URL alone must not start counting before release');
-  arxivPublication.published = true;
-  assert.equal(isArxivPublished(), true);
-  await trackArxivClick('https://arxiv.org/abs/0000.00000');
+  bookPublication.available = true;
+  assert.equal(isReadingAvailable(), true);
+  await trackReadingClick('https://arxiv.org/abs/0000.00000');
   assert.equal(events.length, 0, 'A stale placeholder tab must not start recording');
   analyticsConfig.eventEndpoint = null;
 
@@ -70,7 +70,7 @@ function loadAnalytics() {
   assert.equal(series[5].clicks, 1);
   assert.equal(series[6].clicks, 2);
   assert.equal(clickSeries(readLocalClicks(storage), 7, new Date('2027-01-01T01:00:00Z'))[0].date, '2026-12-26');
-  assert.equal(clickCsv(readLocalClicks(storage)), 'date,arxiv_clicks\n2026-10-13,1\n2026-10-14,2\n');
+  assert.equal(clickCsv(readLocalClicks(storage)), 'date,reading_clicks\n2026-10-13,1\n2026-10-14,2\n');
   const clean = normalizeClickData({ version: 1, daily: { '2026-02-30': 3, '2026-10-14': 2, '2026-10-15': -1, '2026-10-16': '9', bad: 8 }, updatedAt: 'bad' });
   assert.equal(Object.keys(clean.daily).length, 1);
   assert.equal(clean.daily['2026-10-14'], 2);
@@ -79,18 +79,18 @@ function loadAnalytics() {
   assert.equal(totalClicks(readLocalClicks(storage)), 0);
   values.delete(CLICK_STORAGE_KEY);
 
-  await Promise.all(Array.from({ length: 5 }, () => trackArxivClick(releasedUrl)));
+  await Promise.all(Array.from({ length: 5 }, () => trackReadingClick(releasedUrl)));
   assert.equal(totalClicks(readLocalClicks(storage)), 5, 'Concurrent clicks must not overwrite each other');
   assert.equal(events.length, 5);
-  assert.equal(events[0].detail.event, 'arxiv_click');
+  assert.equal(events[0].detail.event, 'reading_click');
   assert.equal(events[0].detail.source, 'preprint_resource');
   assert.equal(events[0].detail.local_recorded, true);
   assert.equal(requests.length + beacons.length, 0, 'Default tracking must stay browser-local');
   delete context.navigator.locks;
-  await trackArxivClick(releasedUrl);
+  await trackReadingClick(releasedUrl);
   assert.equal(totalClicks(readLocalClicks(storage)), 6, 'Browsers without Web Locks still record clicks');
   context.window.localStorage = { getItem: () => null, setItem: () => { throw new Error('quota exceeded'); } };
-  await assert.doesNotReject(() => trackArxivClick(releasedUrl));
+  await assert.doesNotReject(() => trackReadingClick(releasedUrl));
   assert.equal(events.at(-1).detail.local_recorded, false);
 
   assert.equal(httpsEndpoint('http://example.test/events'), null);
@@ -109,19 +109,35 @@ function loadAnalytics() {
   assert.doesNotThrow(() => sendClickEvent(event));
   analyticsConfig.eventEndpoint = null;
   delete context.window;
-  await assert.doesNotReject(() => trackArxivClick(releasedUrl));
+  await assert.doesNotReject(() => trackReadingClick(releasedUrl));
 
-  const linkSource = fs.readFileSync('src/components/arxiv-link.tsx', 'utf8');
+  const linkSource = fs.readFileSync('src/components/reading-link.tsx', 'utf8');
   const linkCode = ts.transpileModule(linkSource, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-  const linkContext = { exports: {}, require: name => name === '@/lib/analytics' ? { trackArxivClick: () => { activations++; return Promise.resolve(); } } : require(name) };
+  const linkContext = { exports: {}, require: name => {
+    if (name === '@/lib/analytics') return { trackReadingClick: () => { activations++; return Promise.resolve(); } };
+    if (name === '@/data/publication') return publication;
+    if (name === '@/lib/asset-path') return { assetPath: path => path };
+    return require(name);
+  } };
   let activations = 0;
   vm.runInNewContext(linkCode, linkContext);
-  const link = linkContext.exports.ArxivLink({ href: 'https://arxiv.org/abs/0000.00000', children: 'Read on arXiv' });
+  const disabled = linkContext.exports.ReadingLink({ href: null, children: 'Read the monograph' });
+  assert.equal(disabled.type, 'button');
+  assert.equal(disabled.props.disabled, true);
+  assert.equal(disabled.props.href, undefined, 'Unavailable reading must have no navigation target');
+  const link = linkContext.exports.ReadingLink({ href: releasedUrl, children: 'Read the monograph' });
+  assert.equal(link.type, 'a');
   link.props.onClick({ button: 0 }); // Primary click and keyboard activation.
   link.props.onClick({ button: 1 }); // Middle clicks belong only to auxclick.
   link.props.onAuxClick({ button: 1 });
   link.props.onClick({ button: 2 });
   link.props.onAuxClick({ button: 2 });
   assert.equal(activations, 2, 'Primary and middle clicks each count once; right clicks do not count');
+  for (const invalid of ['javascript:alert(1)', '//example.test/book.pdf', 'https://user:secret@example.test/book.pdf', '/not-a-pdf']) {
+    bookPublication.url = invalid;
+    assert.equal(isReadingAvailable(), false);
+  }
+  bookPublication.url = '/paper/book.pdf';
+  assert.equal(isReadingAvailable(), true, 'A public local PDF is a supported reading target');
   console.log('PASS: release gate, placeholder exclusion, legacy-record isolation, date boundaries, persistence, aggregation, CSV, concurrent clicks, storage failures, transport fallback');
 })().catch(error => { console.error(error); process.exitCode = 1; });

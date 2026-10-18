@@ -1,4 +1,4 @@
-name: Deploy Physical AI to GitHub Pages
+name: Deploy Physical AI monograph to GitHub Pages
 
 on:
   push:
