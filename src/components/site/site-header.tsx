@@ -15,7 +15,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
             <span aria-hidden="true" className="flex size-9 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#005ea8,#0d74ce_52%,#2aa8f2)] shadow-sm"><BookOpen className="size-5 text-white" strokeWidth={1.7} /></span>
             <span className="text-lg">{projectInfo.name}</span>
           </a>
-          <nav aria-label="Main navigation" className="hidden items-center gap-7 justify-self-center text-sm font-medium text-muted-foreground lg:flex">
+          <nav aria-label="Main navigation" className="hidden items-center gap-5 justify-self-center text-sm font-medium text-muted-foreground lg:flex">
             {navItems.map((item) => <a className="transition hover:text-foreground" href={link(item.href)} key={item.href}>{item.label}</a>)}
           </nav>
           <div className="justify-self-end"><ThemeToggle /></div>
