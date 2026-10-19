@@ -54,18 +54,22 @@ The rights notice identifies respective rights holders and separates third-party
 
 Click counting is enabled for both reading buttons. Earlier placeholder test records are excluded. If the public reading link is disabled in the future, the counter returns to zero and no click events are recorded while it is disabled.
 
-Left clicks, keyboard activation, and middle clicks on either reading button record `reading_click` events. By default, counts are saved only in the current browser under `physicalai:reading-clicks:published:v1`. They are button clicks, not unique readers or successful downloads. Different visitors, devices, and browsers are not combined. Clearing browser data removes local records.
+Both **Read the monograph** buttons now increment one shared, server-side counter through [CountAPI](https://countapi.mileshilliard.com/). Visitors, devices, browsers, and URL aliases all read the same cumulative total. Left clicks, keyboard activation, and middle clicks count once; page views, refreshes, and right clicks do not increment it. These are button clicks, not unique readers or successful downloads.
 
-The dashboard provides totals, today's count, the last seven days, 7/30/90-day charts, a daily table, and CSV export. Dates use Asia/Shanghai (UTC+8).
+The public counter key is defined in `src/lib/analytics.ts`. The API's `/hit/` operation increments it and `/get/` reads it. Refreshing cannot create a click. Counts are refreshed on focus and every 30 seconds while the page is visible, and successful clicks update the current page immediately. Reading links remain usable if the counter service fails; the website never substitutes a device-local total for the shared count.
 
-Optional HTTPS interfaces are reserved for future global collection:
+Global counting starts with this integration. Earlier browser-local counts cannot be recovered or reliably merged, so they are excluded. The hosted API supplies an all-time total, not daily history; the dashboard displays and exports that total without inventing historical data.
+
+This is a free public counter without account ownership or authentication. Anyone who knows the key can access its public API, including the provider's value-setting operation. It is intended for informal website engagement statistics, not an audited or tamper-proof download metric. The site sends only the counter key, without cookies, visitor IDs, or local browser records. Provider details are documented [here](https://countapi.mileshilliard.com/).
+
+Optional HTTPS interfaces support replacing the hosted counter with a controlled backend and daily analytics:
 
 | Configuration | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_ANALYTICS_EVENT_ENDPOINT` | Receives click events via POST |
 | `NEXT_PUBLIC_ANALYTICS_SUMMARY_ENDPOINT` | Supplies aggregated daily data via GET |
 
-For development, copy `.env.example` to `.env.local`. For GitHub Pages, configure repository Actions variables with these names and rebuild. Leave them empty for browser-local counts. A summary endpoint is required to display global counts; a collection endpoint alone does not aggregate local counts in the dashboard.
+For development, copy `.env.example` to `.env.local`. For GitHub Pages, configure both repository Actions variables and rebuild. Leaving them empty keeps the shared hosted counter active. A custom summary endpoint activates the custom-backend path; configure the collection endpoint with it so new clicks reach the same backend. The daily charts, table, and daily CSV export are available with that backend. Dates use Asia/Shanghai (UTC+8).
 
 The collection payload is JSON sent with a `text/plain` content type:
 
@@ -79,7 +83,7 @@ The backend should deduplicate `event_id`, aggregate dates in Asia/Shanghai, and
 {"version":1,"daily":{"2026-10-18":12},"updatedAt":"2026-10-18T08:00:00Z"}
 ```
 
-No visitor fingerprint or persistent visitor identifier is generated. Storage or collection failures do not block the enabled reading link.
+The event's `source` is `hero` or `preprint_resource`; both must contribute to the same total. No visitor fingerprint or persistent visitor identifier is generated. Storage or collection failures do not block the enabled reading link.
 
 ## Citation
 

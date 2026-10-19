@@ -8,13 +8,15 @@ export const ANALYTICS_TIME_ZONE = "Asia/Shanghai";
 export const analyticsConfig = {
   eventEndpoint: process.env.NEXT_PUBLIC_ANALYTICS_EVENT_ENDPOINT || null,
   summaryEndpoint: process.env.NEXT_PUBLIC_ANALYTICS_SUMMARY_ENDPOINT || null,
+  // One public counter shared by both reading buttons, all URLs and all devices.
+  counterKey: "internrobotics_physical_ai_book_reading_clicks_v1_6f492cd8" as string | null,
 };
 
-export type ClickData = { version: 1; daily: Record<string, number>; updatedAt: string | null };
+export type ClickData = { version: 1; daily: Record<string, number>; updatedAt: string | null; total?: number; historyAvailable?: boolean };
 export type ClickDay = { date: string; clicks: number };
 export type ReadingClickEvent = {
   event: "reading_click"; event_id: string; occurred_at: string;
-  source: "preprint_resource"; destination: string;
+  source: "hero" | "preprint_resource"; destination: string;
 };
 type ClickStorage = Pick<Storage, "getItem" | "setItem">;
 
@@ -71,11 +73,36 @@ export function clickSeries(data: ClickData, days: number, at = new Date()): Cli
 }
 
 export function totalClicks(data: ClickData) {
+  if (typeof data.total === "number") return data.total;
   return Object.values(data.daily).reduce((sum, count) => Math.min(Number.MAX_SAFE_INTEGER, sum + count), 0);
 }
 
 export function clickCsv(data: ClickData) {
+  if (data.historyAvailable === false) return `scope,reading_clicks\nall_visitors_both_reading_buttons,${totalClicks(data)}\n`;
   return "date,reading_clicks\n" + Object.entries(data.daily).sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => `${date},${count}`).join("\n") + "\n";
+}
+
+export function usesSharedCounter() {
+  return Boolean(analyticsConfig.counterKey && !analyticsConfig.summaryEndpoint);
+}
+
+export async function sharedClickData(increment = false, signal?: AbortSignal): Promise<ClickData> {
+  if (!analyticsConfig.counterKey) throw new Error("The shared counter is not configured.");
+  const operation = increment ? "hit" : "get";
+  const endpoint = `https://countapi.mileshilliard.com/api/v1/${operation}/${encodeURIComponent(analyticsConfig.counterKey)}`;
+  const response = await fetch(endpoint, {
+    signal, cache: "no-store", credentials: "omit", keepalive: increment,
+    referrerPolicy: "no-referrer",
+  });
+  // A new key has no record until its first click. Reads must never increment it.
+  if (!increment && response.status === 404) return { ...emptyClickData(), total: 0, historyAvailable: false };
+  if (!response.ok) throw new Error("The shared click counter is temporarily unavailable.");
+  const raw = await response.json();
+  const value = raw?.value;
+  if (!(typeof value === "number" || typeof value === "string" && /^\d+$/.test(value)) || !Number.isSafeInteger(Number(value)) || Number(value) < 0) {
+    throw new Error("The shared counter returned an invalid count.");
+  }
+  return { ...emptyClickData(), total: Number(value), historyAvailable: false };
 }
 
 export function httpsEndpoint(endpoint: string | null): string | null {
@@ -100,8 +127,19 @@ export function sendClickEvent(event: ReadingClickEvent) {
   } catch { /* Tracking must never interrupt the reading link. */ }
 }
 
-export async function trackReadingClick(destination: string) {
+export async function trackReadingClick(destination: string, source: ReadingClickEvent["source"] = "preprint_resource") {
   if (typeof window === "undefined" || !isReadingAvailable(destination)) return;
+  if (usesSharedCounter()) {
+    try {
+      // The server performs the increment; no device-local total is used here.
+      const snapshot = await sharedClickData(true);
+      window.dispatchEvent(new CustomEvent(CLICK_EVENT, { detail: { snapshot, source, destination } }));
+    } catch {
+      // Do not retry an ambiguous increment: the server may already have counted it.
+      try { window.dispatchEvent(new CustomEvent(CLICK_EVENT)); } catch { /* Reading remains available. */ }
+    }
+    return;
+  }
   const at = new Date();
   let saved = false;
   const save = () => { incrementLocalClicks(window.localStorage, at); saved = true; };
@@ -114,7 +152,7 @@ export async function trackReadingClick(destination: string) {
   try { eventId = crypto.randomUUID(); } catch { /* A non-identifying fallback works in older browsers. */ }
   const event: ReadingClickEvent = {
     event: "reading_click", event_id: eventId, occurred_at: at.toISOString(),
-    source: "preprint_resource", destination,
+    source, destination,
   };
   try { window.dispatchEvent(new CustomEvent(CLICK_EVENT, { detail: { ...event, local_recorded: saved } })); } catch { /* Optional integration hook. */ }
   sendClickEvent(event);

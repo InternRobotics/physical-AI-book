@@ -4,7 +4,7 @@ import { ArrowLeft, Download, MousePointer2, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useClickData } from "@/components/analytics/use-click-data";
-import { ANALYTICS_TIME_ZONE, clickCsv, clickSeries, dateKey, emptyClickData, totalClicks, type ClickDay } from "@/lib/analytics";
+import { ANALYTICS_TIME_ZONE, clickCsv, clickSeries, dateKey, emptyClickData, totalClicks, usesSharedCounter, type ClickDay } from "@/lib/analytics";
 import { assetPath } from "@/lib/asset-path";
 
 const countFormat = new Intl.NumberFormat("en-US");
@@ -56,6 +56,7 @@ function ClickChart({ series }: { series: ClickDay[] }) {
 export function ClickDashboard() {
   const { data, loading, error, available, global, refresh } = useClickData();
   const [range, setRange] = useState(30);
+  const totalOnly = global && usesSharedCounter();
 
   const snapshot = data ?? emptyClickData();
   const series = clickSeries(snapshot, range);
@@ -81,8 +82,22 @@ export function ClickDashboard() {
         <div><p className="section-eyebrow">Website Analytics</p><h1>Reading Link Clicks</h1><p className="analytics-lead">Clicks on the Read the monograph buttons on the book website.</p></div>
         <span className="analytics-scope">{!available ? "Awaiting online edition" : global ? "All visitor data" : "Local browser data"}</span>
       </header>
-      <p className="analytics-scope-note">{!available ? "The open-access edition is not available online yet. Counts stay at 0 and no clicks are recorded until the reading link is enabled." : global ? "Counts are supplied by the configured summary service." : "These counts belong to this browser only. Visitors and devices are not combined. Global analytics is ready to connect when a service is configured."}</p>
+      <p className="analytics-scope-note">{!available ? "The open-access edition is not available online yet. Counts stay at 0 and no clicks are recorded until the reading link is enabled." : global ? "Both reading buttons contribute to one shared total across all visitors, devices and browsers. Viewing or refreshing the website does not add a click." : "These counts belong to this browser only. Visitors and devices are not combined. Global analytics is ready to connect when a service is configured."}</p>
       {error ? <p role="alert" className="analytics-error">{error}</p> : null}
+      {totalOnly ? (
+        <section className="analytics-panel mt-8" aria-labelledby="shared-total-title">
+          <div className="analytics-panel-heading">
+            <div><h2 id="shared-total-title">Total Reading Clicks</h2><p>Homepage reading button + Open-Access Edition reading button</p></div>
+            <Button size="sm" variant="outline" onClick={refresh} disabled={loading}><RefreshCw aria-hidden="true" />Refresh</Button>
+          </div>
+          <p aria-live="polite" className="my-6 text-6xl font-semibold tabular-nums text-primary">{data ? countFormat.format(totalClicks(data)) : "—"}</p>
+          <p className="text-sm leading-7 text-muted-foreground">All visitors. All devices. One shared count.</p>
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-5 border-t border-border pt-5">
+            <p className="max-w-[75ch] text-sm leading-7 text-muted-foreground">Global counting starts with this integration. Earlier browser-local records are excluded. The counter supplies a cumulative total; daily history is not available.</p>
+            <Button size="sm" variant="outline" onClick={exportCsv} disabled={!data}><Download aria-hidden="true" />Export Total</Button>
+          </div>
+        </section>
+      ) : <>
       <div className="analytics-metrics" aria-live="polite">
         {metrics.map((metric) => <article className="analytics-metric" key={metric.label}><h2>{metric.label}</h2><p>{data || !available ? countFormat.format(metric.value) : "—"}</p><span>{metric.detail}</span></article>)}
       </div>
@@ -98,6 +113,7 @@ export function ClickDashboard() {
         <div className="analytics-panel-heading"><div><h2 id="daily-data-title">Daily Data</h2><p>Daily counts for the selected period. CSV exports include all recorded dates.</p></div><div className="analytics-data-actions"><Button size="sm" variant="outline" onClick={refresh} disabled={loading}><RefreshCw aria-hidden="true" />Refresh</Button><Button size="sm" variant="outline" onClick={exportCsv} disabled={!data}><Download aria-hidden="true" />Export CSV</Button></div></div>
         <details className="analytics-data-details"><summary>View daily counts</summary><div className="analytics-table-scroll"><table><thead><tr><th scope="col">Date</th><th scope="col">Reading Link Clicks</th></tr></thead><tbody>{data ? [...series].reverse().map((day) => <tr key={day.date}><th scope="row">{day.date}</th><td>{countFormat.format(day.clicks)}</td></tr>) : <tr><td colSpan={2}>Counts unavailable</td></tr>}</tbody></table></div></details>
       </section>
+      </>}
       <p className="analytics-note">Only clicks on the enabled public reading link are counted. Earlier placeholder test records are excluded. Counts do not represent unique readers or successful downloads.{available && !global ? " Clearing browser data removes these local records." : ""}</p>
     </div>
   );

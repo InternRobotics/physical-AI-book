@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { isReadingAvailable } from "@/data/publication";
-import { CLICK_EVENT, CLICK_STORAGE_KEY, analyticsConfig, emptyClickData, httpsEndpoint, normalizeClickData, readLocalClicks, type ClickData } from "@/lib/analytics";
+import { CLICK_EVENT, CLICK_STORAGE_KEY, analyticsConfig, emptyClickData, httpsEndpoint, normalizeClickData, readLocalClicks, sharedClickData, usesSharedCounter, totalClicks, type ClickData } from "@/lib/analytics";
 
 export function useClickData() {
   const available = isReadingAvailable();
-  const global = available && Boolean(analyticsConfig.summaryEndpoint);
+  const shared = available && usesSharedCounter();
+  const global = available && (shared || Boolean(analyticsConfig.summaryEndpoint));
   const [data, setData] = useState<ClickData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export function useClickData() {
       try {
         let snapshot: ClickData;
         if (!available) snapshot = emptyClickData();
+        else if (shared) snapshot = await sharedClickData(false, controller.signal);
         else if (global) {
           const endpoint = httpsEndpoint(analyticsConfig.summaryEndpoint);
           if (!endpoint) throw new Error("The summary endpoint needs a valid HTTPS URL.");
@@ -38,15 +40,25 @@ export function useClickData() {
         }
       } finally { if (alive && request === revision) setLoading(false); }
     };
-    const storageChanged = (event: StorageEvent) => { if (event.key === CLICK_STORAGE_KEY) void refresh(); };
+    const clicked = (event: Event) => {
+      const snapshot = (event as CustomEvent<{ snapshot?: ClickData }>).detail?.snapshot;
+      if (shared && snapshot) {
+        // Ignore stale GET responses and out-of-order concurrent increment responses.
+        ++revision;
+        setData((current) => !current || totalClicks(snapshot) >= totalClicks(current) ? snapshot : current);
+        setLoading(false); setError(null);
+      } else void refresh();
+    };
+    const storageChanged = (event: StorageEvent) => { if (!global && event.key === CLICK_STORAGE_KEY) void refresh(); };
     const visible = () => { if (document.visibilityState === "visible") void refresh(); };
     void refresh();
-    window.addEventListener(CLICK_EVENT, refresh);
+    const interval = global ? window.setInterval(visible, 30_000) : null;
+    window.addEventListener(CLICK_EVENT, clicked);
     window.addEventListener("storage", storageChanged);
     window.addEventListener("focus", refresh);
     document.addEventListener("visibilitychange", visible);
-    return () => { alive = false; controller.abort(); window.removeEventListener(CLICK_EVENT, refresh); window.removeEventListener("storage", storageChanged); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", visible); };
-  }, [global, available, refreshKey]);
+    return () => { alive = false; controller.abort(); if (interval !== null) window.clearInterval(interval); window.removeEventListener(CLICK_EVENT, clicked); window.removeEventListener("storage", storageChanged); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", visible); };
+  }, [global, shared, available, refreshKey]);
 
   return { data, loading, error, available, global, refresh: () => setRefreshKey((key) => key + 1) };
 }

@@ -33,7 +33,7 @@ export function HeroSection() {
           <p className="book-hero-description">{projectInfo.description}</p>
           <div className="book-hero-actions">
             {heroActions.map((action, index) => index === 0 ? (
-              <ReadingLink className={buttonClasses({ size: "md" })} href={action.href} key={action.label}>
+              <ReadingLink className={buttonClasses({ size: "md" })} href={action.href} key={action.label} source="hero">
                 {icons[action.icon]}{action.label}
               </ReadingLink>
             ) : action.href ? (

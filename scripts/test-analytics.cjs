@@ -21,7 +21,7 @@ function loadAnalytics() {
       sendBeacon: (url, body) => { beacons.push({ url, body }); return true; },
     },
     crypto: { randomUUID: () => `event-${events.length}` },
-    CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } },
+    CustomEvent: class { constructor(type, options = {}) { this.type = type; this.detail = options.detail; } },
     fetch: (url, options) => { requests.push({ url, options }); return Promise.resolve({ ok: true }); },
   };
   vm.runInNewContext(code, context);
@@ -31,6 +31,7 @@ function loadAnalytics() {
 (async () => {
   const { api, publication, context, values, storage, events, requests, beacons } = loadAnalytics();
   const { CLICK_STORAGE_KEY, dateKey, clickSeries, incrementLocalClicks, readLocalClicks, normalizeClickData, totalClicks, clickCsv, trackReadingClick, analyticsConfig, sendClickEvent, httpsEndpoint } = api;
+  analyticsConfig.counterKey = null; // Exercise the retained local/custom-backend utilities separately.
   const { bookPublication, isReadingAvailable } = publication;
   assert.equal(isReadingAvailable(), true, 'The final edition must be available at its configured PDF URL');
   assert.equal(bookPublication.url, '/paper/Physical-AI-Monograph.pdf');
@@ -143,5 +144,54 @@ function loadAnalytics() {
   }
   bookPublication.url = '/paper/book.pdf';
   assert.equal(isReadingAvailable(), true, 'A public local PDF is a supported reading target');
+
+  // Two independent browser contexts share one server, not their local storage.
+  const first = loadAnalytics(), second = loadAnalytics();
+  let sharedTotal = 0, initialized = false;
+  const sharedRequests = [];
+  const sharedFetch = async (url, options) => {
+    sharedRequests.push({ url, options });
+    if (url.includes('/hit/')) { sharedTotal++; initialized = true; }
+    if (!initialized) return { ok: false, status: 404 };
+    const value = String(sharedTotal);
+    return { ok: true, status: 200, json: async () => ({ value }) };
+  };
+  first.context.fetch = second.context.fetch = sharedFetch;
+  first.values.set(first.api.CLICK_STORAGE_KEY, JSON.stringify({ version: 1, daily: { '2026-10-20': 99 }, updatedAt: null }));
+  assert.equal(first.api.usesSharedCounter(), true, 'Shared counting is the published default');
+  assert.equal(first.api.analyticsConfig.counterKey, second.api.analyticsConfig.counterKey);
+  assert.equal(first.api.totalClicks(await first.api.sharedClickData()), 0, 'An unused shared key reads as zero without creating a click');
+  await Promise.all([
+    first.api.trackReadingClick(first.publication.bookPublication.url, 'hero'),
+    second.api.trackReadingClick(second.publication.bookPublication.url, 'preprint_resource'),
+  ]);
+  assert.equal(sharedTotal, 2, 'Both reading buttons increment the same server counter');
+  const firstSnapshot = await first.api.sharedClickData();
+  const secondSnapshot = await second.api.sharedClickData();
+  assert.equal(first.api.totalClicks(firstSnapshot), 2);
+  assert.equal(second.api.totalClicks(secondSnapshot), 2, 'A separate device reads the same total');
+  assert.equal(firstSnapshot.historyAvailable, false, 'A cumulative total must not invent daily history');
+  assert.equal(first.api.clickCsv(firstSnapshot), 'scope,reading_clicks\nall_visitors_both_reading_buttons,2\n');
+  assert.equal(sharedTotal, 2, 'Reloading and reading counts do not add clicks');
+  assert.equal(first.events[0].detail.source, 'hero');
+  assert.equal(second.events[0].detail.source, 'preprint_resource');
+  assert.equal(first.events[0].detail.snapshot.total >= 1, true);
+  assert.equal(first.api.totalClicks(first.api.readLocalClicks(first.storage)), 99, 'Old local records are neither uploaded nor used as the shared total');
+  assert.equal(second.values.size, 0, 'Shared counting needs no device-local click records');
+  assert.equal(sharedRequests.filter(request => request.url.includes('/hit/')).length, 2);
+  for (const request of sharedRequests) {
+    assert.equal(request.options.cache, 'no-store');
+    assert.equal(request.options.credentials, 'omit');
+    assert.equal(request.options.referrerPolicy, 'no-referrer');
+    if (request.url.includes('/hit/')) assert.equal(request.options.keepalive, true);
+  }
+  first.context.fetch = async () => ({ ok: true, json: async () => ({ value: 'invalid' }) });
+  await assert.rejects(() => first.api.sharedClickData(), /invalid count/);
+  let failedRequests = 0;
+  first.context.fetch = async () => { failedRequests++; throw new Error('offline'); };
+  await assert.doesNotReject(() => first.api.trackReadingClick(first.publication.bookPublication.url));
+  assert.equal(failedRequests, 1, 'An ambiguous failed increment must not retry and double-count');
+  assert.equal(first.api.totalClicks(first.api.readLocalClicks(first.storage)), 99, 'An outage must not silently fall back to a misleading local total');
   console.log('PASS: release gate, placeholder exclusion, legacy-record isolation, date boundaries, persistence, aggregation, CSV, concurrent clicks, storage failures, transport fallback');
+  console.log('PASS: shared totals across independent devices and both buttons, read-only refresh, legacy isolation, cumulative export, invalid responses and network failures');
 })().catch(error => { console.error(error); process.exitCode = 1; });
