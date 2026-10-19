@@ -20,7 +20,6 @@ export function HeroSection() {
       <div aria-hidden="true" className="hero-background" />
       <div className="book-hero-layout mx-auto max-w-[1120px]">
         <div className="book-hero-copy">
-          <p className="publication-badge">{projectInfo.status}</p>
           <h1 className="hero-title text-balance"><span className="title-gradient">{projectInfo.name}</span></h1>
           <p className="hero-subtitle">{projectInfo.subtitle.join(" ")}</p>
           <div className="book-author-row">

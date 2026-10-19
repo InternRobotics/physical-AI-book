@@ -89,6 +89,5 @@ No visitor fingerprint or persistent visitor identifier is generated. Storage or
   title = {{Physical AI}: Concepts, Techniques, and Challenges},
   year = {2026},
   url = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
-  note = {In press; open access},
 }
 ```

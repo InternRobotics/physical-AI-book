@@ -134,7 +134,7 @@ export function BibtexSection() {
     <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="Please use the following citation for the final PDF edition.">
       <p className="citation-prose mb-7 text-base leading-8 text-muted-foreground">{citationText}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4"><h3 className="flex items-center gap-2 font-semibold"><FileText aria-hidden="true" className="size-4 text-primary" />BibTeX</h3><CopyCitation text={bibtex} /></div>
-      <pre className="overflow-x-auto rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
+      <pre className="bibtex-code rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
       <p className="results-note">Citation details refer to the final PDF edition dated October 19, 2026.</p>
       <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p><a className="text-primary text-sm" href="#contact">Contact the team</a></aside>
     </SectionShell>
