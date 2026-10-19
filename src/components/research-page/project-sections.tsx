@@ -8,6 +8,7 @@ import { Button, buttonClasses } from "@/components/ui/button";
 import { ReadingLink } from "@/components/reading-link";
 import { ReadingClickCount } from "@/components/analytics/reading-click-count";
 import contents from "@/data/contents.json";
+import backMatter from "@/data/back-matter.json";
 import { aboutParagraphs, bibtex, citationText, contactInfo, coreElements, figures, partDescriptions, projectInfo, resources, rightsNotice } from "@/data/project-page";
 import { assetPath } from "@/lib/asset-path";
 
@@ -73,8 +74,10 @@ export function ContentsSection() {
       <div className="contents-grid">
         {contents.map((part) => <ContentsPartCard key={part.id} part={part} />)}
       </div>
-      <p className="mt-5 text-sm font-medium">References <span className="ml-2 text-muted-foreground">p. {projectInfo.referencesPage}</span></p>
-      <p className="results-note">Expand a chapter to view its sections. Page numbers refer to the draft manuscript.</p>
+      <ul className="mt-5 flex flex-wrap gap-x-7 gap-y-2 text-sm font-medium" aria-label="Back matter">
+        {backMatter.map((entry) => <li key={entry.title}>{entry.title}<span className="ml-2 text-muted-foreground">p. {entry.page}</span></li>)}
+      </ul>
+      <p className="results-note">Expand a chapter to view its sections. Page numbers match the final PDF edition.</p>
     </SectionShell>
   );
 }
@@ -94,7 +97,7 @@ const resourceIcons = { pdf: BookOpen, code: Code2, slides: Presentation, errata
 
 export function ResourcesSection() {
   return (
-    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Companion Resources" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="In press, with open access. Companion materials will be shared here as they become available.">
+    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Companion Resources" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Companion materials will be shared here as they become available.">
       <div className="grid gap-5 md:grid-cols-2">
         {resources.map((resource) => {
           const Icon = resourceIcons[resource.icon];
@@ -115,10 +118,10 @@ export function ResourcesSection() {
         })}
       </div>
       <div className="publication-details mt-8">
-        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">In Press, with Open Access</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The monograph is in press and will be published with open access. Publication details and the reading link will appear here when available.</p></div>
+        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">Final Edition, with Open Access</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The final PDF edition is available to read and download. Publisher and print edition details will be added when confirmed.</p></div>
         <dl className="publication-facts">
           <div><dt>Publisher</dt><dd>{projectInfo.publisher ?? "To be announced"}</dd></div>
-          <div><dt>Publication date</dt><dd>{projectInfo.publicationDate ?? "To be announced"}</dd></div>
+          <div><dt>PDF edition date</dt><dd>{projectInfo.publicationDate ?? "To be announced"}</dd></div>
           <div><dt>Print edition</dt><dd>{projectInfo.purchaseUrl ? <a className="text-primary" href={projectInfo.purchaseUrl} target="_blank" rel="noopener noreferrer">Order the book</a> : "Coming soon"}</dd></div>
         </dl>
       </div>
@@ -128,11 +131,11 @@ export function ResourcesSection() {
 
 export function BibtexSection() {
   return (
-    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="The monograph is in press, with open access.">
+    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="Please use the following citation for the final PDF edition.">
       <p className="citation-prose mb-7 text-base leading-8 text-muted-foreground">{citationText}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4"><h3 className="flex items-center gap-2 font-semibold"><FileText aria-hidden="true" className="size-4 text-primary" />BibTeX</h3><CopyCitation text={bibtex} /></div>
       <pre className="overflow-x-auto rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
-      <p className="results-note">The citation will be updated when the manuscript and final publication details are available.</p>
+      <p className="results-note">Citation details refer to the final PDF edition dated October 19, 2026.</p>
       <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p><a className="text-primary text-sm" href="#contact">Contact the team</a></aside>
     </SectionShell>
   );

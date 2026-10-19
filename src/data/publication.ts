@@ -1,7 +1,7 @@
-// Set a public reading URL (PDF or publication page) and available: true together.
+// Public final PDF edition. Keep the release switch and URL in sync.
 export const bookPublication = {
-  url: null as string | null,
-  available: false,
+  url: "/paper/Physical-AI-Monograph.pdf" as string | null,
+  available: true,
 };
 
 export function isReadingAvailable(destination = bookPublication.url) {

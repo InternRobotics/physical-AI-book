@@ -2,6 +2,7 @@ import { BookOpen, FileText, Library, List } from "lucide-react";
 import Image from "next/image";
 
 import { InteractiveBookCover } from "@/components/research-page/interactive-book-cover";
+import { ReadingLink } from "@/components/reading-link";
 import { buttonClasses } from "@/components/ui/button";
 import { bookCover, heroActions, projectInfo, teamLogos } from "@/data/project-page";
 import { assetPath } from "@/lib/asset-path";
@@ -32,7 +33,11 @@ export function HeroSection() {
           </div>
           <p className="book-hero-description">{projectInfo.description}</p>
           <div className="book-hero-actions">
-            {heroActions.map((action, index) => action.href ? (
+            {heroActions.map((action, index) => index === 0 ? (
+              <ReadingLink className={buttonClasses({ size: "md" })} href={action.href} key={action.label}>
+                {icons[action.icon]}{action.label}
+              </ReadingLink>
+            ) : action.href ? (
               <a
                 className={buttonClasses({ size: "md", variant: index === 0 ? "default" : "outline" })}
                 href={assetPath(action.href)}
@@ -50,7 +55,7 @@ export function HeroSection() {
           <dl aria-label="About this edition" className="book-facts">
             <div><dt>Parts</dt><dd>3</dd></div>
             <div><dt>Chapters</dt><dd>12</dd></div>
-            <div><dt>Manuscript pages</dt><dd>{projectInfo.manuscriptPages}</dd></div>
+            <div><dt>Pages</dt><dd>{projectInfo.pageCount}</dd></div>
           </dl>
         </div>
         <figure className="book-cover-figure">

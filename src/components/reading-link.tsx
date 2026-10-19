@@ -7,7 +7,7 @@ import { assetPath } from "@/lib/asset-path";
 
 export function ReadingLink({ href, children, className }: { href: string | null; children: ReactNode; className?: string }) {
   if (!href || !isReadingAvailable(href)) {
-    return <button className={className} disabled type="button" title="The open-access edition will be available here when released." data-reading-state="unavailable">{children}</button>;
+    return <button className={className} disabled type="button" title="The reading link is currently unavailable." data-reading-state="unavailable">{children}</button>;
   }
   return (
     <a className={className} href={assetPath(href)} target="_blank" rel="noopener noreferrer" data-analytics-event="reading_click"

@@ -32,6 +32,10 @@ function loadAnalytics() {
   const { api, publication, context, values, storage, events, requests, beacons } = loadAnalytics();
   const { CLICK_STORAGE_KEY, dateKey, clickSeries, incrementLocalClicks, readLocalClicks, normalizeClickData, totalClicks, clickCsv, trackReadingClick, analyticsConfig, sendClickEvent, httpsEndpoint } = api;
   const { bookPublication, isReadingAvailable } = publication;
+  assert.equal(isReadingAvailable(), true, 'The final edition must be available at its configured PDF URL');
+  assert.equal(bookPublication.url, '/paper/Physical-AI-Monograph.pdf');
+  bookPublication.available = false;
+  bookPublication.url = null;
   const releasedUrl = 'https://example.test/physical-ai-monograph.pdf';
   const event = { event: 'reading_click', event_id: 'test', occurred_at: '2026-10-14T00:00:00Z', source: 'preprint_resource', destination: releasedUrl };
 

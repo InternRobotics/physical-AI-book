@@ -4,11 +4,11 @@ The book website for the Physical Intelligence Team, Shanghai AI Laboratory.
 
 [Website](https://internrobotics.github.io/physical-AI-book/) · [Reading analytics](https://internrobotics.github.io/physical-AI-book/analytics/)
 
-The monograph is **in press, with open access**. It covers concepts, technical foundations, methods, and challenges of intelligence that interacts with the physical world.
+The **final PDF edition** is available with open access. It covers concepts, technical foundations, methods, and challenges of intelligence that interacts with the physical world.
 
 The website includes the book introduction, a three-part expandable table of contents, author information, companion resources, citation, rights notice, and contact card. The desktop contents panels have equal fixed heights; chapters scroll inside their panels. On smaller screens, the parts stack vertically.
 
-The public reading link is currently disabled. The Open-Access Manuscript card displays **Read the monograph** and a zero click count. No unpublished PDF is included in the website or its static export.
+The homepage and Open-Access Edition card link to [the final PDF](https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf). Both **Read the monograph** buttons record clicks, and the resource card displays their combined count.
 
 ## Development
 
@@ -42,9 +42,9 @@ On Windows, `scripts/build.ps1` also supports the bundled Node runtime.
 | Theme and responsive styles | `src/app/globals.css` |
 | Cover artwork and figures | `public/images/monograph/` |
 
-The page numbers reflect the latest supplied 389-page manuscript; references begin on page 344. Unpublished source manuscripts and local verification files belong under `reference/`, which is ignored by Git and excluded from deployment. Do not place private manuscripts under `public/`.
+The table of contents follows the final 388-page PDF dated October 19, 2026: three parts, twelve chapters, and sixty sections. Contributors begin on page 316, Terminology and Abbreviations on page 317, Notation on page 327, and References on page 343. Back-matter entries are maintained in `src/data/back-matter.json`.
 
-When a reading edition is ready, set `bookPublication.url` to its public HTTPS publication page or PDF URL, or a root-relative public PDF path, and set `bookPublication.available` to `true`. Rebuild the site to enable the reading button and start counting. Both settings are required. The button is independent of the eventual publication platform.
+The published file is `public/paper/Physical-AI-Monograph.pdf`; `bookPublication.url` points to it and `bookPublication.available` is `true`. To replace the edition, update the PDF and synchronize the contents, edition details, and citation before rebuilding. Local verification material belongs under the ignored `reference/` directory.
 
 Set `contactInfo.email` to enable **Contact us**. Until then, the button stays disabled and the card explains that the email will be announced.
 
@@ -52,9 +52,9 @@ The rights notice identifies respective rights holders and separates third-party
 
 ## Click analytics
 
-The homepage counter and dashboard remain at **0** while the reading button is disabled. No click records or analytics requests are generated in this state. Earlier placeholder test records are excluded.
+Click counting is enabled for both reading buttons. Earlier placeholder test records are excluded. If the public reading link is disabled in the future, the counter returns to zero and no click events are recorded while it is disabled.
 
-After release, left clicks, keyboard activation, and middle clicks on the enabled reading link record `reading_click` events. By default, counts are saved only in the current browser under `physicalai:reading-clicks:published:v1`. They are button clicks, not unique readers or successful downloads. Different visitors, devices, and browsers are not combined. Clearing browser data removes local records.
+Left clicks, keyboard activation, and middle clicks on either reading button record `reading_click` events. By default, counts are saved only in the current browser under `physicalai:reading-clicks:published:v1`. They are button clicks, not unique readers or successful downloads. Different visitors, devices, and browsers are not combined. Clearing browser data removes local records.
 
 The dashboard provides totals, today's count, the last seven days, 7/30/90-day charts, a daily table, and CSV export. Dates use Asia/Shanghai (UTC+8).
 
@@ -88,6 +88,7 @@ No visitor fingerprint or persistent visitor identifier is generated. Storage or
   title  = {Physical AI Monograph},
   author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
   year   = {2026},
-  note   = {In press; open access}
+  url    = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
+  note   = {Final PDF edition; open access}
 }
 ```

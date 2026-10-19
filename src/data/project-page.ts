@@ -1,4 +1,4 @@
-// Page numbers verified against Physical_AI___Monograph (2).pdf. Edit this file for release updates.
+// Edition details verified against the final Physical_AI___Monograph-2.pdf.
 import { bookPublication } from "@/data/publication";
 
 export type ImageAsset = { src: string | null; width: number; height: number; alt: string };
@@ -7,16 +7,15 @@ export const projectInfo = {
   name: "Physical AI Monograph",
   fullTitle: "Physical AI Monograph",
   subtitle: ["Concepts, Techniques, and Challenges"],
-  status: "In press · Open access",
-  editionNote: "In press, with open access · Publication details to be announced",
+  status: "Final edition · Open access",
+  editionNote: "Final PDF edition · October 19, 2026",
   description: "A monograph on intelligence that perceives, models, and acts upon the physical world, connecting technical foundations with embodied systems and the challenges of Physical AGI.",
   team: "Physical Intelligence Team, Shanghai AI Laboratory",
   year: "2026",
-  manuscriptPages: 389,
-  referencesPage: 344,
+  pageCount: 388,
   readingUrl: bookPublication.url,
   publisher: null as string | null,
-  publicationDate: null as string | null,
+  publicationDate: "October 19, 2026" as string | null,
   purchaseUrl: null as string | null,
 };
 
@@ -34,7 +33,7 @@ export const teamLogos: (ImageAsset & { id: string })[] = [
   { id: "shanghai-ai-laboratory", src: "/images/ailab-logo.png", width: 672, height: 390, alt: "Shanghai Artificial Intelligence Laboratory" },
 ];
 export const heroActions = [
-  { label: "Read the monograph", href: null, icon: "pdf" },
+  { label: "Read the monograph", href: bookPublication.url, icon: "pdf" },
   { label: "Table of contents", href: "#contents", icon: "contents" },
   { label: "Resources", href: "#resources", icon: "resources" },
   { label: "BibTeX", href: "#bibtex", icon: "citation" },
@@ -67,7 +66,7 @@ export const partDescriptions: Record<string, string> = {
   iii: "General physical intelligence, evaluation and governance, and long-term development strategies.",
 };
 export const resources: { id: string; title: string; description: string; label: string; href: string | null; icon: "pdf" | "code" | "slides" | "errata" }[] = [
-  { id: "preprint", title: "Open-Access Manuscript", description: "The monograph is in press. The open-access edition will be available here when released.", label: "Read the monograph", href: null, icon: "pdf" },
+  { id: "preprint", title: "Open-Access Edition", description: "Read and download the final PDF edition of the monograph.", label: "Read the monograph", href: bookPublication.url, icon: "pdf" },
   { id: "code", title: "Code & Examples", description: "A space for companion implementations and examples. Links will be added when available.", label: "Coming soon", href: null, icon: "code" },
   { id: "slides", title: "Lecture Slides", description: "A space for chapter slides and teaching materials to accompany the monograph.", label: "Coming soon", href: null, icon: "slides" },
   { id: "errata", title: "Errata & Feedback", description: "Corrections and a reader feedback channel will be added here when available.", label: "Coming soon", href: null, icon: "errata" },
@@ -76,11 +75,12 @@ export const contactInfo = {
   name: "InternRobotics",
   email: null as string | null,
 };
-export const rightsNotice = "Copyright and other intellectual property rights in this monograph and any third-party material remain with their respective rights holders. The monograph is in press and will be published with open access. Reuse is governed by the licence accompanying the published edition and any separate terms stated in third-party credit lines. For rights, attribution or permissions enquiries, please contact the team.";
-export const citationText = `${projectInfo.team}. ${projectInfo.fullTitle}. In press, with open access. 2026.`;
+export const rightsNotice = "Copyright and other intellectual property rights in this monograph and any third-party material remain with their respective rights holders. The final PDF edition is available with open access. Reuse is governed by the licence accompanying the edition and any separate terms stated in third-party credit lines. For rights, attribution or permissions enquiries, please contact the team.";
+export const citationText = `${projectInfo.team}. ${projectInfo.fullTitle}. Final PDF edition, 2026.`;
 export const bibtex = `@misc{physicalai2026monograph,
   title  = {Physical AI Monograph},
   author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
   year   = {2026},
-  note   = {In press; open access}
+  url    = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
+  note   = {Final PDF edition; open access}
 }`;

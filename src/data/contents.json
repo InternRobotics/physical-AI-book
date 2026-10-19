@@ -22,39 +22,44 @@
           {
             "number": "1.3",
             "title": "Core Elements of Physical AI",
-            "page": 16
+            "page": 17
           },
           {
             "number": "1.4",
             "title": "The Role of Physical AI in the Evolution of AI",
-            "page": 19
+            "page": 20
           },
           {
             "number": "1.5",
             "title": "The Application Landscape of Physical AI",
             "page": 21
+          },
+          {
+            "number": "1.6",
+            "title": "Summary and Organization of the Monograph",
+            "page": 27
           }
         ]
       },
       {
         "number": 2,
         "title": "Technical Foundations",
-        "page": 28,
+        "page": 29,
         "sections": [
           {
             "number": "2.1",
             "title": "Mathematical Descriptions of the Physical World",
-            "page": 28
+            "page": 29
           },
           {
             "number": "2.2",
             "title": "Control Theory and Autonomous Systems",
-            "page": 31
+            "page": 32
           },
           {
             "number": "2.3",
             "title": "Embodied Cognition and the Development of Intelligence",
-            "page": 40
+            "page": 41
           },
           {
             "number": "2.4",
@@ -73,54 +78,54 @@
       {
         "number": 3,
         "title": "Perception and Cognition",
-        "page": 50,
+        "page": 51,
         "sections": [
           {
             "number": "3.1",
             "title": "Tasks and Characteristics of Physical Perception",
-            "page": 50
+            "page": 51
           },
           {
             "number": "3.2",
             "title": "Multimodal Perception and Fusion",
-            "page": 51
+            "page": 52
           },
           {
             "number": "3.3",
             "title": "3D/4D Spatial Perception",
-            "page": 57
+            "page": 58
           },
           {
             "number": "3.4",
             "title": "High-Level Perception and Cognition",
-            "page": 59
+            "page": 60
           }
         ]
       },
       {
         "number": 4,
-        "title": "Data for Physical Intelligence",
-        "page": 65,
+        "title": "Data for Physical AI",
+        "page": 66,
         "sections": [
           {
             "number": "4.1",
-            "title": "Data Foundations for Physical Intelligence",
-            "page": 65
+            "title": "Data Foundations for Physical AI",
+            "page": 66
           },
           {
             "number": "4.2",
             "title": "Data Collection and Interaction",
-            "page": 67
+            "page": 68
           },
           {
             "number": "4.3",
             "title": "Physics Engines and Generative Worlds",
-            "page": 75
+            "page": 76
           },
           {
             "number": "4.4",
             "title": "Sim-to-Real Transfer and Real-World Alignment",
-            "page": 81
+            "page": 82
           },
           {
             "number": "4.5",
@@ -137,7 +142,7 @@
           {
             "number": "5.1",
             "title": "Concepts and Theoretical Frameworks of World Models",
-            "page": 95
+            "page": 96
           },
           {
             "number": "5.2",
@@ -152,7 +157,7 @@
           {
             "number": "5.4",
             "title": "Using and Validating World Models",
-            "page": 120
+            "page": 119
           },
           {
             "number": "5.5",
@@ -164,138 +169,138 @@
       {
         "number": 6,
         "title": "Foundation Models for Robot Manipulation",
-        "page": 129,
+        "page": 128,
         "sections": [
           {
             "number": "6.1",
             "title": "Emergence and Taxonomy",
-            "page": 129
+            "page": 128
           },
           {
             "number": "6.2",
             "title": "Vision-Language-Action Model",
-            "page": 134
+            "page": 133
           },
           {
             "number": "6.3",
             "title": "Pre-Training, Post-Training, and Capability Shaping",
-            "page": 139
+            "page": 138
           },
           {
             "number": "6.4",
             "title": "Multi-Embodiment Modeling and Model Adaptation",
-            "page": 146
+            "page": 145
           },
           {
             "number": "6.5",
             "title": "Model Deployment and Efficiency Optimization",
-            "page": 153
+            "page": 152
           },
           {
             "number": "6.6",
             "title": "Dexterous Manipulation Foundation Models",
-            "page": 158
+            "page": 157
           }
         ]
       },
       {
         "number": 7,
         "title": "Foundation Models for Whole-Body Motor Control",
-        "page": 163,
+        "page": 162,
         "sections": [
           {
             "number": "7.1",
             "title": "Scope, Taxonomy, and Control Interfaces",
-            "page": 163
+            "page": 162
           },
           {
             "number": "7.2",
             "title": "Body Dynamics and State Estimation",
-            "page": 169
+            "page": 167
           },
           {
             "number": "7.3",
             "title": "Command-Conditioned Motor Control",
-            "page": 173
+            "page": 172
           },
           {
             "number": "7.4",
             "title": "Motor Pretraining and Dexterous Whole-Body Control",
-            "page": 180
+            "page": 178
           },
           {
             "number": "7.5",
             "title": "Real-Time Execution, Recovery, and Safety Control",
-            "page": 189
+            "page": 187
           }
         ]
       },
       {
         "number": 8,
-        "title": "Physical Agent",
-        "page": 195,
+        "title": "Physical Agents",
+        "page": 193,
         "sections": [
           {
             "number": "8.1",
             "title": "Definition of Physical Agent",
-            "page": 195
+            "page": 193
           },
           {
             "number": "8.2",
             "title": "Physical Forms of Physical Agent",
-            "page": 201
+            "page": 199
           },
           {
             "number": "8.3",
             "title": "Physical Goal Representation and Task Grounding",
-            "page": 208
+            "page": 207
           },
           {
             "number": "8.4",
-            "title": "Multi-Agent Collaboration and Distributed Physical Intelligence",
-            "page": 214
+            "title": "Multi-Agent Collaboration and Distributed Physical AI",
+            "page": 212
           }
         ]
       },
       {
         "number": 9,
         "title": "Hardware and Systems",
-        "page": 221,
+        "page": 219,
         "sections": [
           {
             "number": "9.1",
-            "title": "Hardware and Embodiment Taxonomy for Physical Intelligence",
-            "page": 221
+            "title": "Hardware and Embodiment Taxonomy for Physical AI",
+            "page": 219
           },
           {
             "number": "9.2",
             "title": "Sensors, Actuators, and Intelligent Materials",
-            "page": 225
+            "page": 223
           },
           {
             "number": "9.3",
-            "title": "Device–Edge–Cloud Collaboration and Real-Time Communication",
-            "page": 235
+            "title": "Device-Edge-Cloud Collaboration and Real-Time Communication",
+            "page": 233
           },
           {
             "number": "9.4",
             "title": "Software Stacks and Development Infrastructure",
-            "page": 241
+            "page": 239
           },
           {
             "number": "9.5",
             "title": "Reliability and Deployment at Scale",
-            "page": 250
+            "page": 246
           },
           {
             "number": "9.6",
             "title": "Case Studies in Dexterous Hand Hardware",
-            "page": 254
+            "page": 250
           },
           {
             "number": "9.7",
             "title": "Case Studies in Humanoid System Integration",
-            "page": 260
+            "page": 257
           }
         ]
       }
@@ -308,92 +313,92 @@
     "chapters": [
       {
         "number": 10,
-        "title": "General Physical Intelligence",
-        "page": 266,
+        "title": "Physical AGI",
+        "page": 263,
         "sections": [
           {
             "number": "10.1",
-            "title": "Core Capabilities of General Physical Intelligence",
-            "page": 266
+            "title": "Core Capabilities of Physical AGI",
+            "page": 263
           },
           {
             "number": "10.2",
             "title": "Systematic Generalization in Open-World Settings",
-            "page": 269
+            "page": 266
           },
           {
             "number": "10.3",
-            "title": "Human–AI Collaboration and Social Intelligence",
-            "page": 271
+            "title": "Human-AI Collaboration and Social Intelligence",
+            "page": 268
           },
           {
             "number": "10.4",
-            "title": "Multi-Agent Systems and Collective Physical Intelligence",
-            "page": 272
+            "title": "Multi-Agent Systems and Collective Physical AI",
+            "page": 269
           },
           {
             "number": "10.5",
             "title": "Autonomous Evolution",
-            "page": 274
+            "page": 271
           },
           {
             "number": "10.6",
-            "title": "Towards the Ultimate Goal of Physical AGI",
-            "page": 276
+            "title": "Toward the Ultimate Goal of Physical AGI",
+            "page": 273
           }
         ]
       },
       {
         "number": 11,
         "title": "Evaluation, Safety, and Governance for Physical AI",
-        "page": 278,
+        "page": 275,
         "sections": [
           {
             "number": "11.1",
             "title": "Physical-World Evaluators",
-            "page": 278
+            "page": 275
           },
           {
             "number": "11.2",
             "title": "Capability Evaluation and Benchmarking",
-            "page": 282
+            "page": 279
           },
           {
             "number": "11.3",
             "title": "Physical Safety and Action Alignment",
-            "page": 293
+            "page": 289
           },
           {
             "number": "11.4",
             "title": "System Safety and Risk Governance",
-            "page": 298
+            "page": 295
           },
           {
             "number": "11.5",
             "title": "Law, Ethics, Standards, and Global Governance",
-            "page": 303
+            "page": 300
           }
         ]
       },
       {
         "number": 12,
         "title": "Strategy and Civilizational Outlook",
-        "page": 307,
+        "page": 304,
         "sections": [
           {
             "number": "12.1",
-            "title": "Development Strategies for Physical Intelligence",
-            "page": 307
+            "title": "Development Strategies for Physical AI",
+            "page": 304
           },
           {
             "number": "12.2",
-            "title": "Physical Intelligence and Human Civilization",
-            "page": 312
+            "title": "Physical AI and Human Civilization",
+            "page": 309
           },
           {
             "number": "12.3",
             "title": "Summary and Outlook",
-            "page": 318
+            "page": 315
           }
         ]
       }

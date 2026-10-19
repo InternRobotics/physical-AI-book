@@ -47,7 +47,7 @@ function ClickChart({ series }: { series: ClickDay[] }) {
         })}
         {[0, Math.floor((series.length - 1) / 2), series.length - 1].map((index) => <text key={index} x={left + (index + 0.5) * slot} y={height - 10} textAnchor={index === 0 ? "start" : index === series.length - 1 ? "end" : "middle"} className="click-chart-label">{displayDate(series[index].date)}</text>)}
       </svg>
-      {!hasClicks ? <div className="click-chart-empty"><MousePointer2 aria-hidden="true" className="size-6 text-primary" /><p>No clicks in this date range</p><span>Counts appear when the public reading link becomes available.</span></div> : null}
+      {!hasClicks ? <div className="click-chart-empty"><MousePointer2 aria-hidden="true" className="size-6 text-primary" /><p>No clicks in this date range</p><span>Reading-link clicks will appear here as they are recorded.</span></div> : null}
       {selected && hasClicks ? <div className="click-chart-tooltip" style={{ left: `${Math.max(9, Math.min(91, (left + ((active ?? 0) + 0.5) * slot) / width * 100))}%` }}><span>{selected.date}</span><strong>{clickLabel(selected.clicks)}</strong></div> : null}
     </div>
   );
@@ -78,7 +78,7 @@ export function ClickDashboard() {
     <div className="mx-auto max-w-[1120px]" id="top">
       <a className="analytics-back" href={assetPath("/#preprint-manuscript")}><ArrowLeft aria-hidden="true" className="size-4" />Back to the Book</a>
       <header className="analytics-heading">
-        <div><p className="section-eyebrow">Website Analytics</p><h1>Reading Link Clicks</h1><p className="analytics-lead">Clicks on the reading button in the Open-Access Manuscript resource card.</p></div>
+        <div><p className="section-eyebrow">Website Analytics</p><h1>Reading Link Clicks</h1><p className="analytics-lead">Clicks on the Read the monograph buttons on the book website.</p></div>
         <span className="analytics-scope">{!available ? "Awaiting online edition" : global ? "All visitor data" : "Local browser data"}</span>
       </header>
       <p className="analytics-scope-note">{!available ? "The open-access edition is not available online yet. Counts stay at 0 and no clicks are recorded until the reading link is enabled." : global ? "Counts are supplied by the configured summary service." : "These counts belong to this browser only. Visitors and devices are not combined. Global analytics is ready to connect when a service is configured."}</p>
