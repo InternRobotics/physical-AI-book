@@ -1024,6 +1024,8 @@ a:focus-visible {
     align-items: start;
     column-gap: 1.5rem;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Resizing chapter summaries must not move the page's scroll anchor. */
+    overflow-anchor: none;
   }
   .contents-part {
     display: flex;
@@ -1045,7 +1047,6 @@ a:focus-visible {
   }
   .contents-chapters > .chapter-details { display: flex; flex: 1 0 auto; flex-direction: column; }
   .contents-chapters > .chapter-details > summary { flex: 1; }
-
 }
 
 /* Fixed frames stay aligned; expanded chapters scroll within their own part. */
