@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/research-page/project-sections";
 
 export const metadata: Metadata = {
   title: "Reading Link Analytics",
-  description: "Click statistics for the Physical AI monograph’s reading button.",
+  description: "Click statistics for the Physical AI Monograph’s reading button.",
   robots: { index: false, follow: false },
 };
 

@@ -1,4 +1,4 @@
-# Physical AI monograph
+# Physical AI Monograph
 
 The book website for the Physical Intelligence Team, Shanghai AI Laboratory.
 
@@ -85,7 +85,7 @@ No visitor fingerprint or persistent visitor identifier is generated. Storage or
 
 ```bibtex
 @misc{physicalai2026monograph,
-  title  = {Physical AI monograph},
+  title  = {Physical AI Monograph},
   author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
   year   = {2026},
   note   = {In press; open access}

@@ -4,8 +4,8 @@ import { bookPublication } from "@/data/publication";
 export type ImageAsset = { src: string | null; width: number; height: number; alt: string };
 
 export const projectInfo = {
-  name: "Physical AI monograph",
-  fullTitle: "Physical AI monograph",
+  name: "Physical AI Monograph",
+  fullTitle: "Physical AI Monograph",
   subtitle: ["Concepts, Techniques, and Challenges"],
   status: "In press · Open access",
   editionNote: "In press, with open access · Publication details to be announced",
@@ -40,10 +40,10 @@ export const heroActions = [
   { label: "BibTeX", href: "#bibtex", icon: "citation" },
 ];
 export const bookCover: ImageAsset = {
-  src: "/images/monograph/cover-v3.png",
+  src: "/images/monograph/cover-v4.png",
   width: 1024,
   height: 1536,
-  alt: "Book cover of Physical AI monograph",
+  alt: "Book cover of Physical AI Monograph",
 };
 export const figures: Record<string, ImageAsset> = {
   teaser: { src: "/images/monograph/progression.png", width: 1212, height: 372, alt: "Figure 1.1: progression from digital tools and simulated agents to real-world agents, multi-agent collaboration, and infrastructure-level physical intelligence" },
@@ -79,7 +79,7 @@ export const contactInfo = {
 export const rightsNotice = "Copyright and other intellectual property rights in this monograph and any third-party material remain with their respective rights holders. The monograph is in press and will be published with open access. Reuse is governed by the licence accompanying the published edition and any separate terms stated in third-party credit lines. For rights, attribution or permissions enquiries, please contact the team.";
 export const citationText = `${projectInfo.team}. ${projectInfo.fullTitle}. In press, with open access. 2026.`;
 export const bibtex = `@misc{physicalai2026monograph,
-  title  = {Physical AI monograph},
+  title  = {Physical AI Monograph},
   author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
   year   = {2026},
   note   = {In press; open access}
