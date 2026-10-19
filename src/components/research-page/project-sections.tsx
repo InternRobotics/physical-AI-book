@@ -1,4 +1,4 @@
-import { ArrowUpRight, BookOpen, Code2, FileText, Mail } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, Mail } from "lucide-react";
 
 import { ProjectImage } from "@/components/media/project-image";
 import { CopyCitation } from "@/components/research-page/copy-citation";
@@ -93,11 +93,11 @@ export function AuthorsSection() {
   );
 }
 
-const resourceIcons = { pdf: BookOpen, code: Code2 };
+const resourceIcons = { pdf: BookOpen, errata: FileText };
 
 export function ResourcesSection() {
   return (
-    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Code" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Code and examples will be shared here when available.">
+    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Monograph and Reader Feedback" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Errata and reader feedback will be added here.">
       <div className="grid gap-5 md:grid-cols-2">
         {resources.map((resource) => {
           const Icon = resourceIcons[resource.icon];
@@ -143,7 +143,7 @@ export function BibtexSection() {
 
 export function ContactSection() {
   return (
-    <SectionShell eyebrow="Contact" id="contact" title="Get in Touch" lead="For questions about the monograph and its companion materials.">
+    <SectionShell eyebrow="Contact" id="contact" title="Get in Touch" lead="For questions, corrections, or feedback about the monograph.">
       <div className="contact-card">
         <Mail aria-hidden="true" className="size-7 text-primary" strokeWidth={1.5} />
         <div><h3 className="text-xl font-semibold">{contactInfo.name}</h3><p className="mt-2 text-sm text-muted-foreground">{contactInfo.email ?? "Our contact email will be announced here."}</p></div>
