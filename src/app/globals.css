@@ -1048,15 +1048,23 @@ a:focus-visible {
 
   /* Bound Part I independently of its expanded native details elements. */
   .contents-part[data-part="i"] {
+    --part-i-summary-height: calc(21.5rem - 2px);
     display: grid;
     grid-template-rows: 17rem minmax(0, 1fr);
     max-height: 60rem;
+    overflow-anchor: none;
   }
   .contents-part[data-part="i"] .contents-chapters {
     contain: size;
     height: 100%;
     max-height: 100%;
     overflow-x: hidden;
+  }
+  /* Keep the clicked title in place, including on the first expansion. */
+  .contents-part[data-part="i"] .chapter-details { flex: 0 0 auto; }
+  .contents-part[data-part="i"] .chapter-details > summary {
+    flex: none;
+    min-height: var(--part-i-summary-height);
   }
 }
 
@@ -1065,6 +1073,7 @@ a:focus-visible {
   .contents-part { height: 56rem; }
   .contents-part-header { height: 16rem; }
   .contents-part[data-part="i"] {
+    --part-i-summary-height: calc(20rem - 2px);
     grid-template-rows: 16rem minmax(0, 1fr);
     max-height: 56rem;
   }
