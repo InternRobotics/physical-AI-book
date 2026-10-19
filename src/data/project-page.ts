@@ -76,11 +76,11 @@ export const contactInfo = {
   email: null as string | null,
 };
 export const rightsNotice = "Copyright and other intellectual property rights in this monograph and any third-party material remain with their respective rights holders. The final PDF edition is available with open access. Reuse is governed by the licence accompanying the edition and any separate terms stated in third-party credit lines. For rights, attribution or permissions enquiries, please contact the team.";
-export const citationText = `${projectInfo.team}. ${projectInfo.fullTitle}. Final PDF edition, 2026.`;
-export const bibtex = `@misc{physicalai2026monograph,
-  title  = {Physical AI Monograph},
-  author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
-  year   = {2026},
-  url    = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
-  note   = {Final PDF edition; open access}
+export const citationText = "Zhang, W., Shen, C., Xue, T., et al. Physical AI: Concepts, Techniques, and Challenges. In press, with open access. 2026.";
+export const bibtex = `@misc{zhang2026physicalai,
+  author = {Zhang, Weinan and Shen, Chunhua and Xue, Tianfan and Zhao, Bin and Jiang, Bingqi and Guo, Zihan and Cui, Zicai and Li, Yang and Zhou, Ming and Chen, Xinyuan and Ding, Lihe and Chen, Xiao and Wang, Yujin and Guo, Shi and Dong, Junting and Lu, Tao and Shen, Xing and Guo, Haoyu and Mu, Yao and Yu, Haiyong and Ma, Haoxiang and Huang, Fuxian and Yu, Qiaojun and Zhou, Yunsong and Li, Kailin and Wang, Zirui and Xue, Yufei and Zeng, Weishuai and Huang, Tao and Wang, Zhigang and Liu, Junli and Wu, Pengyuan and Zhang, Pingrui and Wang, Haotian and Zhou, Dongzhan and Cao, Jiafei and Yuan, Feng and Ye, Xinyi and Xuan, Quanli and Yu, Mulin and Gu, Shangding and Song, Kaiwen and Wang, Dong and Li, Jiarui and Liu, Kehui and Jia, Zhongjie and Li, Dongjiang and Bao, Jiacheng and Yang, Haoran and Chen, Zhaoqing and Sun, Yiming and Zhou, Bowen},
+  title = {{Physical AI}: Concepts, Techniques, and Challenges},
+  year = {2026},
+  url = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
+  note = {In press; open access},
 }`;

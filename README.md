@@ -84,11 +84,11 @@ No visitor fingerprint or persistent visitor identifier is generated. Storage or
 ## Citation
 
 ```bibtex
-@misc{physicalai2026monograph,
-  title  = {Physical AI Monograph},
-  author = {{Physical Intelligence Team, Shanghai AI Laboratory}},
-  year   = {2026},
-  url    = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
-  note   = {Final PDF edition; open access}
+@misc{zhang2026physicalai,
+  author = {Zhang, Weinan and Shen, Chunhua and Xue, Tianfan and Zhao, Bin and Jiang, Bingqi and Guo, Zihan and Cui, Zicai and Li, Yang and Zhou, Ming and Chen, Xinyuan and Ding, Lihe and Chen, Xiao and Wang, Yujin and Guo, Shi and Dong, Junting and Lu, Tao and Shen, Xing and Guo, Haoyu and Mu, Yao and Yu, Haiyong and Ma, Haoxiang and Huang, Fuxian and Yu, Qiaojun and Zhou, Yunsong and Li, Kailin and Wang, Zirui and Xue, Yufei and Zeng, Weishuai and Huang, Tao and Wang, Zhigang and Liu, Junli and Wu, Pengyuan and Zhang, Pingrui and Wang, Haotian and Zhou, Dongzhan and Cao, Jiafei and Yuan, Feng and Ye, Xinyi and Xuan, Quanli and Yu, Mulin and Gu, Shangding and Song, Kaiwen and Wang, Dong and Li, Jiarui and Liu, Kehui and Jia, Zhongjie and Li, Dongjiang and Bao, Jiacheng and Yang, Haoran and Chen, Zhaoqing and Sun, Yiming and Zhou, Bowen},
+  title = {{Physical AI}: Concepts, Techniques, and Challenges},
+  year = {2026},
+  url = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
+  note = {In press; open access},
 }
 ```
