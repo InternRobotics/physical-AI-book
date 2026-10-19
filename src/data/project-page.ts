@@ -65,11 +65,9 @@ export const partDescriptions: Record<string, string> = {
   ii: "The technical stack: perception, data, world models, manipulation, motor control, agents, and systems.",
   iii: "General physical intelligence, evaluation and governance, and long-term development strategies.",
 };
-export const resources: { id: string; title: string; description: string; label: string; href: string | null; icon: "pdf" | "code" | "slides" | "errata" }[] = [
+export const resources: { id: string; title: string; description: string; label: string; href: string | null; icon: "pdf" | "code" }[] = [
   { id: "preprint", title: "Open-Access Edition", description: "Read and download the final PDF edition of the monograph.", label: "Read the monograph", href: bookPublication.url, icon: "pdf" },
   { id: "code", title: "Code & Examples", description: "A space for companion implementations and examples. Links will be added when available.", label: "Coming soon", href: null, icon: "code" },
-  { id: "slides", title: "Lecture Slides", description: "A space for chapter slides and teaching materials to accompany the monograph.", label: "Coming soon", href: null, icon: "slides" },
-  { id: "errata", title: "Errata & Feedback", description: "Corrections and a reader feedback channel will be added here when available.", label: "Coming soon", href: null, icon: "errata" },
 ];
 export const contactInfo = {
   name: "InternRobotics",

@@ -6,7 +6,7 @@ The book website for the Physical Intelligence Team, Shanghai AI Laboratory.
 
 The **final PDF edition** is available with open access. It covers concepts, technical foundations, methods, and challenges of intelligence that interacts with the physical world.
 
-The website includes the book introduction, a three-part expandable table of contents, author information, companion resources, citation, rights notice, and contact card. The desktop contents panels have equal fixed heights; chapters scroll inside their panels. On smaller screens, the parts stack vertically.
+The website includes the book introduction, a three-part expandable table of contents, author information, the book PDF and code resources, citation, rights notice, and contact card. The desktop contents panels have equal fixed heights; chapters scroll inside their panels. On smaller screens, the parts stack vertically.
 
 The homepage and Open-Access Edition card link to [the final PDF](https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf). Both **Read the monograph** buttons record clicks, and the resource card displays their combined count.
 

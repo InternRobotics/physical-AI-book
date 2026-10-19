@@ -1,4 +1,4 @@
-import { ArrowUpRight, BookOpen, Code2, FileText, Mail, MessageSquare, Presentation } from "lucide-react";
+import { ArrowUpRight, BookOpen, Code2, FileText, Mail } from "lucide-react";
 
 import { ProjectImage } from "@/components/media/project-image";
 import { CopyCitation } from "@/components/research-page/copy-citation";
@@ -93,11 +93,11 @@ export function AuthorsSection() {
   );
 }
 
-const resourceIcons = { pdf: BookOpen, code: Code2, slides: Presentation, errata: MessageSquare };
+const resourceIcons = { pdf: BookOpen, code: Code2 };
 
 export function ResourcesSection() {
   return (
-    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Companion Resources" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Companion materials will be shared here as they become available.">
+    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Book and Code" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Code and examples will be shared here when available.">
       <div className="grid gap-5 md:grid-cols-2">
         {resources.map((resource) => {
           const Icon = resourceIcons[resource.icon];
