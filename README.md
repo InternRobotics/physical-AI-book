@@ -46,7 +46,7 @@ The table of contents follows the final 388-page PDF dated October 19, 2026: thr
 
 The published file is `public/paper/Physical-AI-Monograph.pdf`; `bookPublication.url` points to it and `bookPublication.available` is `true`. To replace the edition, update the PDF and synchronize the contents, edition details, and citation before rebuilding. Local verification material belongs under the ignored `reference/` directory.
 
-Set `contactInfo.email` to enable **Contact us**. Until then, the button stays disabled and the card explains that the email will be announced.
+For questions, corrections, or feedback, email [physicalai@pjlab.org.cn](mailto:physicalai@pjlab.org.cn). The contact card displays this address and its **Contact us** button opens a new email. Update `contactInfo.email` to change the address.
 
 The rights notice identifies respective rights holders and separates third-party permissions from the licence of the published edition. It does not claim that rights clearance has already been verified or assign an unconfirmed Creative Commons licence.
 

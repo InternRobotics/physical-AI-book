@@ -71,7 +71,7 @@ export const resources: { id: string; title: string; description: string; label:
 ];
 export const contactInfo = {
   name: "InternRobotics",
-  email: null as string | null,
+  email: "physicalai@pjlab.org.cn",
 };
 export const rightsNotice = "Copyright and other intellectual property rights in this monograph and any third-party material remain with their respective rights holders. The final PDF edition is available with open access. Reuse is governed by the licence accompanying the edition and any separate terms stated in third-party credit lines. For rights, attribution or permissions enquiries, please contact the team.";
 export const citationText = "Zhang, W., Shen, C., Xue, T., et al. Physical AI: Concepts, Techniques, and Challenges. In press, with open access. 2026.";
