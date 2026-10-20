@@ -2,6 +2,7 @@ import { ArrowUpRight, BookOpen, FileText, Mail } from "lucide-react";
 
 import { ProjectImage } from "@/components/media/project-image";
 import { CopyCitation } from "@/components/research-page/copy-citation";
+import { CopyEmail } from "@/components/research-page/copy-email";
 import { FigureCard } from "@/components/site/figure-card";
 import { SectionShell } from "@/components/site/section-shell";
 import { Button, buttonClasses } from "@/components/ui/button";
@@ -136,7 +137,7 @@ export function BibtexSection() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4"><h3 className="flex items-center gap-2 font-semibold"><FileText aria-hidden="true" className="size-4 text-primary" />BibTeX</h3><CopyCitation text={bibtex} /></div>
       <pre className="bibtex-code rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
       <p className="results-note">Citation details refer to the final PDF edition dated October 19, 2026.</p>
-      <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p><a className="text-primary text-sm" href="#contact">Contact the team</a></aside>
+      <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p></aside>
     </SectionShell>
   );
 }
@@ -146,8 +147,8 @@ export function ContactSection() {
     <SectionShell eyebrow="Contact" id="contact" title="Get in Touch" lead="For questions, corrections, or feedback about the monograph.">
       <div className="contact-card">
         <Mail aria-hidden="true" className="size-7 text-primary" strokeWidth={1.5} />
-        <div><h3 className="text-xl font-semibold">{contactInfo.name}</h3><p className="mt-2 text-sm text-muted-foreground">{contactInfo.email ?? "Our contact email will be announced here."}</p></div>
-        {contactInfo.email ? <a className={buttonClasses({ className: "contact-action" })} href={`mailto:${contactInfo.email}`}>Contact us</a> : <Button className="contact-action" disabled title="Our contact email will be announced here.">Contact us</Button>}
+        <div><h3 className="text-xl font-semibold">{contactInfo.name}</h3><p className="mt-2 select-all text-sm text-muted-foreground">{contactInfo.email ?? "Our contact email will be announced here."}</p></div>
+        {contactInfo.email ? <CopyEmail email={contactInfo.email} /> : <Button className="contact-action" disabled title="Our contact email will be announced here.">Copy Email</Button>}
       </div>
     </SectionShell>
   );
