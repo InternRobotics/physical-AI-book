@@ -4,11 +4,11 @@ The book website for the Physical Intelligence Team, Shanghai AI Laboratory.
 
 [Website](https://internrobotics.github.io/physical-AI-book/) · [Reading analytics](https://internrobotics.github.io/physical-AI-book/analytics/)
 
-The **final PDF edition** is available with open access. It covers concepts, technical foundations, methods, and challenges of intelligence that interacts with the physical world.
+The monograph is available with open access on [arXiv:2610.27045](https://arxiv.org/abs/2610.27045). It covers concepts, technical foundations, methods, and challenges of intelligence that interacts with the physical world.
 
 The website includes the book introduction, a three-part expandable table of contents, author information, the book PDF, an errata and reader feedback placeholder, citation, rights notice, and contact card. The desktop contents panels have equal fixed heights; chapters scroll inside their panels. On smaller screens, the parts stack vertically.
 
-The homepage and Open-Access Edition card link to [the final PDF](https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf). Both **Read the monograph** buttons record clicks, and the resource card displays their combined count.
+The homepage and Open-Access Edition card link to [the monograph on arXiv](https://arxiv.org/abs/2610.27045). Both **Read the monograph** buttons record clicks, and the resource card displays their combined count. The existing shared counter continues across the change from the hosted PDF to arXiv.
 
 ## Development
 
@@ -44,7 +44,7 @@ On Windows, `scripts/build.ps1` also supports the bundled Node runtime.
 
 The table of contents follows the final 388-page PDF dated October 19, 2026: three parts, twelve chapters, and sixty sections. Contributors begin on page 316, Terminology and Abbreviations on page 317, Notation on page 327, and References on page 343. Back-matter entries are maintained in `src/data/back-matter.json`.
 
-The published file is `public/paper/Physical-AI-Monograph.pdf`; `bookPublication.url` points to it and `bookPublication.available` is `true`. To replace the edition, update the PDF and synchronize the contents, edition details, and citation before rebuilding. Local verification material belongs under the ignored `reference/` directory.
+The primary reading destination is configured in `bookPublication.url` as `https://arxiv.org/abs/2610.27045`, with `bookPublication.available` set to `true`. The earlier PDF remains at `public/paper/Physical-AI-Monograph.pdf` for existing direct links. When the edition changes, synchronize the contents, edition details, and citation before rebuilding. Local verification material belongs under the ignored `reference/` directory.
 
 For questions, corrections, or feedback, email [physicalai@pjlab.org.cn](mailto:physicalai@pjlab.org.cn). The contact card displays this address and its **Copy Email** button copies it, with a confirmation on success. If clipboard access is unavailable, the card selects the address in a read-only field for manual copying. Update `contactInfo.email` to change the address.
 
@@ -88,10 +88,13 @@ The event's `source` is `hero` or `preprint_resource`; both must contribute to t
 ## Citation
 
 ```bibtex
-@misc{zhang2026physicalai,
-  author = {Zhang, Weinan and Shen, Chunhua and Xue, Tianfan and Zhao, Bin and Jiang, Bingqi and Guo, Zihan and Cui, Zicai and Li, Yang and Zhou, Ming and Chen, Xinyuan and Ding, Lihe and Chen, Xiao and Wang, Yujin and Guo, Shi and Dong, Junting and Lu, Tao and Shen, Xing and Guo, Haoyu and Mu, Yao and Yu, Haiyong and Ma, Haoxiang and Huang, Fuxian and Yu, Qiaojun and Zhou, Yunsong and Li, Kailin and Wang, Zirui and Xue, Yufei and Zeng, Weishuai and Huang, Tao and Wang, Zhigang and Liu, Junli and Wu, Pengyuan and Zhang, Pingrui and Wang, Haotian and Zhou, Dongzhan and Cao, Jiafei and Yuan, Feng and Ye, Xinyi and Xuan, Quanli and Yu, Mulin and Gu, Shangding and Song, Kaiwen and Wang, Dong and Li, Jiarui and Liu, Kehui and Jia, Zhongjie and Li, Dongjiang and Bao, Jiacheng and Yang, Haoran and Chen, Zhaoqing and Sun, Yiming and Zhou, Bowen},
+@misc{zhang2026physicalaiconceptstechniques,
+  author={Weinan Zhang and Chunhua Shen and Tianfan Xue and Bin Zhao and Bingqi Jiang and Zihan Guo and Zicai Cui and Yang Li and Ming Zhou and Xinyuan Chen and Lihe Ding and Xiao Chen and Yujin Wang and Shi Guo and Junting Dong and Tao Lu and Xing Shen and Haoyu Guo and Yao Mu and Haiyong Yu and Haoxiang Ma and Fuxian Huang and Qiaojun Yu and Yunsong Zhou and Kailin Li and Zirui Wang and Yufei Xue and Weishuai Zeng and Tao Huang and Zhigang Wang and Junli Liu and Pengyuan Wu and Pingrui Zhang and Haotian Wang and Dongzhan Zhou and Jiafei Cao and Feng Yuan and Xinyi Ye and Quanli Xuan and Mulin Yu and Shangding Gu and Kaiwen Song and Dong Wang and Jiarui Li and Kehui Liu and Zhongjie Jia and Dongjiang Li and Jiacheng Bao and Haoran Yang and Zhaoqing Chen and Yiming Sun and Bowen Zhou},
   title = {{Physical AI}: Concepts, Techniques, and Challenges},
-  year = {2026},
-  url = {https://internrobotics.github.io/physical-AI-book/paper/Physical-AI-Monograph.pdf},
+  year={2026},
+  eprint={2610.27045},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2610.27045},
 }
 ```

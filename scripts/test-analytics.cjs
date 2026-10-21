@@ -33,8 +33,8 @@ function loadAnalytics() {
   const { CLICK_STORAGE_KEY, dateKey, clickSeries, incrementLocalClicks, readLocalClicks, normalizeClickData, totalClicks, clickCsv, trackReadingClick, analyticsConfig, sendClickEvent, httpsEndpoint } = api;
   analyticsConfig.counterKey = null; // Exercise the retained local/custom-backend utilities separately.
   const { bookPublication, isReadingAvailable } = publication;
-  assert.equal(isReadingAvailable(), true, 'The final edition must be available at its configured PDF URL');
-  assert.equal(bookPublication.url, '/paper/Physical-AI-Monograph.pdf');
+  assert.equal(isReadingAvailable(), true, 'The monograph must be available at its configured arXiv URL');
+  assert.equal(bookPublication.url, 'https://arxiv.org/abs/2610.27045');
   bookPublication.available = false;
   bookPublication.url = null;
   const releasedUrl = 'https://example.test/physical-ai-monograph.pdf';

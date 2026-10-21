@@ -98,7 +98,7 @@ const resourceIcons = { pdf: BookOpen, errata: FileText };
 
 export function ResourcesSection() {
   return (
-    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Monograph and Reader Feedback" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the final PDF edition. Errata and reader feedback will be added here.">
+    <SectionShell className="bg-muted/35" eyebrow="Read & Explore" id="resources" title="The Monograph and Reader Feedback" headingClassName="max-w-none" leadClassName="desktop-single-line-lead" lead="Read the monograph on arXiv. Errata and reader feedback will be added here.">
       <div className="grid gap-5 md:grid-cols-2">
         {resources.map((resource) => {
           const Icon = resourceIcons[resource.icon];
@@ -119,10 +119,10 @@ export function ResourcesSection() {
         })}
       </div>
       <div className="publication-details mt-8">
-        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">Final Edition, with Open Access</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The final PDF edition is available to read and download. Publisher and print edition details will be added when confirmed.</p></div>
+        <div><p className="section-eyebrow">Publication</p><h3 className="mt-3 text-xl font-semibold">Final Edition, with Open Access</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">The monograph is available on arXiv with open access. Publisher and print edition details will be added when confirmed.</p></div>
         <dl className="publication-facts">
           <div><dt>Publisher</dt><dd>{projectInfo.publisher ?? "To be announced"}</dd></div>
-          <div><dt>PDF edition date</dt><dd>{projectInfo.publicationDate ?? "To be announced"}</dd></div>
+          <div><dt>arXiv submission</dt><dd>{projectInfo.publicationDate ?? "To be announced"}</dd></div>
           <div><dt>Print edition</dt><dd>{projectInfo.purchaseUrl ? <a className="text-primary" href={projectInfo.purchaseUrl} target="_blank" rel="noopener noreferrer">Order the book</a> : "Coming soon"}</dd></div>
         </dl>
       </div>
@@ -132,11 +132,11 @@ export function ResourcesSection() {
 
 export function BibtexSection() {
   return (
-    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="Please use the following citation for the final PDF edition.">
+    <SectionShell eyebrow="Citation" id="bibtex" title="Cite the Monograph" lead="Please use the following citation for the monograph on arXiv.">
       <p className="citation-prose mb-7 text-base leading-8 text-muted-foreground">{citationText}</p>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4"><h3 className="flex items-center gap-2 font-semibold"><FileText aria-hidden="true" className="size-4 text-primary" />BibTeX</h3><CopyCitation text={bibtex} /></div>
       <pre className="bibtex-code rounded-lg border border-border bg-card p-5 text-sm leading-7 text-foreground"><code>{bibtex}</code></pre>
-      <p className="results-note">Citation details refer to the final PDF edition dated October 19, 2026.</p>
+      <p className="results-note">Bibliographic details match arXiv:2610.27045.</p>
       <aside className="rights-notice" aria-labelledby="rights-title"><h3 id="rights-title">Rights and Permissions</h3><p>{rightsNotice}</p></aside>
     </SectionShell>
   );

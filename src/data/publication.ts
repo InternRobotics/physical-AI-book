@@ -1,6 +1,6 @@
-// Public final PDF edition. Keep the release switch and URL in sync.
+// Public reading destination. Keep the release switch and URL in sync.
 export const bookPublication = {
-  url: "/paper/Physical-AI-Monograph.pdf" as string | null,
+  url: "https://arxiv.org/abs/2610.27045" as string | null,
   available: true,
 };
 
